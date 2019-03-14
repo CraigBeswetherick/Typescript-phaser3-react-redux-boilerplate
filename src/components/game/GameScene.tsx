@@ -23,7 +23,7 @@ export class GameScene extends Phaser.Scene {
     //TODO: handle create
     console.log('preload game');
     this.input.on('pointerdown', () => {
-      this.game.events.emit(COMPLETE_LEVEL, 1);
+      // this.game.events.emit(COMPLETE_LEVEL, 1);
       this.game.events.emit(INCREASE_SCORE, 1);
     });
   }
