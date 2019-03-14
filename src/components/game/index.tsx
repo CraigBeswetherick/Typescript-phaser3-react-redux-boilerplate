@@ -5,8 +5,7 @@ import { completeLevel, increaseScore, resetScore } from '../../actions';
 
 const mapStateToProps = (state: State) => {
   return {
-    currentLevel: state.currentLevelReducer.currentLevel,
-    currentScore: state.currentScoreReducer.currentScore
+    currentLevel: state.currentLevelReducer.currentLevel
   };
 };
 

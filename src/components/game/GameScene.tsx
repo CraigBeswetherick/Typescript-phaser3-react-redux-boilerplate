@@ -2,7 +2,6 @@ import { INCREASE_SCORE, COMPLETE_LEVEL } from '../../actions';
 
 interface Props {
   currentLevel: number;
-  currentScore: number;
 }
 
 export class GameScene extends Phaser.Scene {
@@ -13,7 +12,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   init(props: Props) {
-    console.log(props.currentLevel, props.currentScore);
+    console.log(props.currentLevel);
   }
 
   preload() {
