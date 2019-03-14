@@ -8,10 +8,10 @@ This should automatically lint the project upon save via ESLint in VSCode.
 
 All static UI apart from the game itself will be handled via React components.
 
-This will be:
-
 All gameState data such as `currentLevel` and `currentScore` are stored within a Redux store.
 These values are passed to the `GameScene` class, which will then display the game.
+
+## Create-React-App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
