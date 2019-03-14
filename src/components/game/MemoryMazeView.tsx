@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import 'phaser';
 import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from '../../actions';
 import { GameScene } from './GameScene';
 import { CurrentScoreContainer } from '../ui/CurrentScore';
-import { getMaxListeners } from 'cluster';
 
 interface Props {
   onIncreaseScore: Function;
