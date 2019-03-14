@@ -5,7 +5,7 @@ interface Props {
 }
 
 const CurrentLevelView = (props: Props) => {
-  return <p>Current Score: {props.currentLevel}</p>;
+  return <p>Current Level: {props.currentLevel}</p>;
 };
 
 export default CurrentLevelView;
