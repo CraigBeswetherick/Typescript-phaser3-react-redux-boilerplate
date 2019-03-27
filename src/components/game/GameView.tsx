@@ -24,7 +24,7 @@ export class GameView extends React.Component<Props> {
   componentDidMount() {
     var viewportwidth;
     var viewportheight;
-    const dog;
+    const dog = null;
     //   the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
 
     if (typeof window.innerWidth != 'undefined') {
