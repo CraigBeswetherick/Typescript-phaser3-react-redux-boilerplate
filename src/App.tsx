@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MemoryMazeContainer } from './components/game';
+import { GameContainer } from './components/game';
 import './App.scss';
 
 interface State {
@@ -11,7 +11,7 @@ class App extends React.Component<{}, State> {
     return (
       <div className="App">
         <header className="App-header">
-          <MemoryMazeContainer />
+          <GameContainer />
         </header>
       </div>
     );

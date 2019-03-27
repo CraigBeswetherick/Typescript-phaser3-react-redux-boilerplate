@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { State } from '../../reducers';
-import { MemoryMazeView } from './MemoryMazeView';
+import { GameView } from './GameView';
 import { completeLevel, increaseScore, resetScore } from '../../actions';
 
 const mapStateToProps = (state: State) => {
@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export const MemoryMazeContainer = connect(
+export const GameContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(MemoryMazeView);
+)(GameView);

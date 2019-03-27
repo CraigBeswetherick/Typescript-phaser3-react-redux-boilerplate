@@ -5,7 +5,7 @@ interface Props {
 }
 
 const CurrentScoreView = (props: Props) => {
-  return <p>Current Score: {props.currentScore}</p>;
+  return <p>Current Entities: {props.currentScore}</p>;
 };
 
 export default CurrentScoreView;

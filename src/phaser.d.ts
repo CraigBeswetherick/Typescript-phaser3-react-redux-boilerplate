@@ -12510,7 +12510,7 @@ declare namespace Phaser {
             /**
              * A blank object which can be used to store data related to this Bob in.
              */
-            data: object;
+            data: any;
 
             /**
              * The horizontally flipped state of the Bob.
