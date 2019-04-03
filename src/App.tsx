@@ -10,9 +10,8 @@ class App extends React.Component<{}, State> {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <GameContainer />
-        </header>
+        <header className="App-header" />
+        <GameContainer />
       </div>
     );
   }
