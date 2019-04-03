@@ -1,6 +1,6 @@
 import React from 'react';
 import * as PIXI from 'pixi.js';
-import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from '../../actions';
+// import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from '../../actions';
 import { CurrentScoreContainer } from '../ui/CurrentScore';
 import Bunny from './entities/Bunny';
 import './GameView.scss';
