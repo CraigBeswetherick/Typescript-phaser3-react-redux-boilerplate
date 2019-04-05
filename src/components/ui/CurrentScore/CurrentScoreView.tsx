@@ -2,7 +2,7 @@ import * as React from 'react';
 import './CurrentScore.scss';
 
 interface Props {
-  currentScore: Number;
+  currentScore: number;
 }
 
 const CurrentScoreView = (props: Props) => {
