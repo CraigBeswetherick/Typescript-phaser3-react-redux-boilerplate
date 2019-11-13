@@ -1,7 +1,7 @@
 ## Installation
-Yarn install
-Yarn run
-
+Yarn install<br />
+Yarn run<br />
+<br />
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
