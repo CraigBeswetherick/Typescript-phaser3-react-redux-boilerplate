@@ -1,8 +1,8 @@
-import React from 'react';
-import 'phaser';
-import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from '../../actions';
-import { GameScene } from './GameScene';
-import { CurrentScoreContainer } from '../ui/CurrentScore';
+import React from "react";
+import "phaser";
+import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from "../../actions";
+import { GameScene } from "./GameScene";
+import { CurrentScoreContainer } from "../ui/CurrentScore";
 
 interface Props {
   onIncreaseScore: Function;
@@ -19,50 +19,24 @@ interface GameOptions {
   scene: any;
 }
 export class GameView extends React.Component<Props> {
-  game: any;
+  game: Phaser.Game;
 
-  componentDidMount() {
-    var viewportwidth;
-    var viewportheight;
-
-    //   the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
-
-    if (typeof window.innerWidth != 'undefined') {
-      viewportwidth = window.innerWidth;
-      viewportheight = window.innerHeight;
-    }
-
-    // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
-    else if (
-      typeof document.documentElement !== 'undefined' &&
-      typeof document.documentElement.clientWidth !== 'undefined' &&
-      document.documentElement.clientWidth !== 0
-    ) {
-      viewportwidth = document.documentElement.clientWidth;
-      viewportheight = document.documentElement.clientHeight;
-    }
-
-    // older versions of IE
-    else {
-      const body = document.getElementsByTagName('body')[0];
-      viewportwidth = body.clientWidth;
-      viewportheight = body.clientHeight;
-    }
+  constructor(props: Props) {
+    super(props);
 
     const config: GameOptions = {
       type: Phaser.CANVAS,
-      width: viewportwidth,
-      height: viewportheight * 0.85,
-      parent: 'game',
+      width: window.innerWidth,
+      height: window.innerHeight * 0.9,
+      parent: "game",
       scene: GameScene
     };
 
     this.game = new Phaser.Game(config);
-    addListeners(this.game, this.props);
-  }
 
-  componentDidUpdate() {
-    this.game.scene.start('GameScene', this.props);
+    this.game.scale.scaleMode = Phaser.Scale.RESIZE;
+
+    addListeners(this.game, this.props);
   }
 
   render() {

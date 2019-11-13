@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
-import { State } from '../../reducers';
-import { GameView } from './GameView';
-import { completeLevel, increaseScore, resetScore } from '../../actions';
+import { connect } from "react-redux";
+import { State } from "../../reducers";
+import { GameView } from "./GameView";
+import { completeLevel, increaseScore, resetScore } from "../../actions";
 
 const mapStateToProps = (state: State) => {
   return {
@@ -11,7 +11,7 @@ const mapStateToProps = (state: State) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onCompleteLevel: (level: number) => dispatch(completeLevel()),
+    onCompleteLevel: () => dispatch(completeLevel()),
     onIncreaseScore: (increment: number) => dispatch(increaseScore(increment)),
     onResetScore: () => dispatch(resetScore())
   };
