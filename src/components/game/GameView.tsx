@@ -1,8 +1,8 @@
-import React from "react";
-import "phaser";
-import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from "../../actions";
-import { GameScene } from "./GameScene";
-import { CurrentScoreContainer } from "../ui/CurrentScore";
+import React from 'react';
+import 'phaser';
+import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from '../../actions';
+import { GameScene } from './GameScene';
+import { CurrentScoreContainer } from '../ui/CurrentScore';
 
 interface Props {
   onIncreaseScore: Function;
@@ -28,8 +28,8 @@ export class GameView extends React.Component<Props> {
       type: Phaser.CANVAS,
       width: window.innerWidth,
       height: window.innerHeight * 0.9,
-      parent: "game",
-      scene: GameScene
+      parent: 'game',
+      scene: GameScene,
     };
 
     this.game = new Phaser.Game(config);
