@@ -1,6 +1,6 @@
-import React from "react";
-import { GameContainer } from "./components/game";
-import "./App.scss";
+import React from 'react';
+import { GameContainer } from './components/game';
+import './App.scss';
 
 const App: React.FC = () => {
   return (
@@ -8,6 +8,6 @@ const App: React.FC = () => {
       <GameContainer />
     </div>
   );
-};
+}
 
 export default App;
