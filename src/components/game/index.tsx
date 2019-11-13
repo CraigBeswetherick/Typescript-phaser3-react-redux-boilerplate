@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
-import { State } from "../../reducers";
-import { GameView } from "./GameView";
-import { completeLevel, increaseScore, resetScore } from "../../actions";
+import { connect } from 'react-redux';
+import { State } from '../../reducers';
+import { GameView } from './GameView';
+import { completeLevel, increaseScore, resetScore } from '../../actions';
 
 const mapStateToProps = (state: State) => {
   return {

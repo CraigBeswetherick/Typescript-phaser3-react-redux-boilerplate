@@ -1,18 +1,25 @@
-import { INCREASE_SCORE, COMPLETE_LEVEL } from "../../actions";
+import { INCREASE_SCORE, COMPLETE_LEVEL } from '../../actions';
 
 interface Props {
   currentLevel: number;
 }
+
+type CustomBob = {
+  x: number;
+  y: number;
+  data: any;
+};
 
 export class GameScene extends Phaser.Scene {
   blitter!: Phaser.GameObjects.Blitter;
   gravity: number = 0.5;
   idx: number = 1;
   numbers: Array<number> = [];
+  startEnts: number = 500;
 
   constructor() {
     super({
-      key: "GameScene"
+      key: 'GameScene',
     });
   }
 
@@ -21,42 +28,28 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.atlas("atlas", "images/veg.png", "images/veg.json");
+    this.load.atlas('atlas', 'images/veg.png', 'images/veg.json');
   }
 
   create() {
-    const startEnts = 10;
+    this.blitter = this.add.blitter(0, 0, 'atlas');
 
-    this.game.events.emit(INCREASE_SCORE, startEnts);
+    this.game.events.emit(INCREASE_SCORE, this.startEnts);
 
-    this.input.on("pointerdown", () => {
-      // this.game.events.emit(COMPLETE_LEVEL, 1);
-
-      this.game.events.emit(INCREASE_SCORE, startEnts);
-
-      for (var i = 0; i < 10; ++i) {
-        this.launch();
-      }
-    });
-
-    this.blitter = this.add.blitter(0, 0, "atlas");
-
-    for (var i = 0; i < 100; ++i) {
+    while (this.startEnts > 0) {
+      this.startEnts--;
       this.launch();
     }
-  }
 
-  checkScale = () => {
-    var gameDiv = document.getElementById("game");
-    if (gameDiv) {
-      console.log(gameDiv.clientHeight, this.game.renderer.height);
-
-      if (gameDiv.clientHeight > this.game.renderer.height) {
-        gameDiv.style.height = this.game.renderer.height.toString() + "px";
-        console.log("set");
+    this.input.on('pointerdown', () => {
+      const amount = 50;
+      for (var i = 0; i < amount; ++i) {
+        this.launch();
       }
-    }
-  };
+
+      this.game.events.emit(INCREASE_SCORE, amount);
+    });
+  }
 
   update() {
     for (
@@ -64,7 +57,7 @@ export class GameScene extends Phaser.Scene {
       index < length;
       ++index
     ) {
-      var bob: Phaser.GameObjects.Bob = this.blitter.children.list[index];
+      var bob: CustomBob = this.blitter.children.list[index];
 
       bob.data.vy += this.gravity;
 
@@ -105,17 +98,17 @@ export class GameScene extends Phaser.Scene {
 
     if (this.idx < 10) {
       chosenFrame = this.textures.getFrame(
-        "atlas",
-        "veg0" + this.idx.toString()
+        'atlas',
+        'veg0' + this.idx.toString()
       );
     } else {
       chosenFrame = this.textures.getFrame(
-        "atlas",
-        "veg" + this.idx.toString()
+        'atlas',
+        'veg' + this.idx.toString()
       );
     }
 
-    const bob: Phaser.GameObjects.Bob = this.blitter.create(0, 0, chosenFrame);
+    const bob: CustomBob = this.blitter.create(0, 0, chosenFrame);
 
     bob.data.chosenFrame = chosenFrame;
     bob.data.vx = Math.random() * 10;
