@@ -1,21 +1,13 @@
-import React, { Component } from 'react';
-import { GameContainer } from './components/game';
-import './App.scss';
+import React from "react";
+import { GameContainer } from "./components/game";
+import "./App.scss";
 
-interface State {
-  currentLevel: number;
-}
-
-class App extends React.Component<{}, State> {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <GameContainer />
-        </header>
-      </div>
-    );
-  }
-}
+const App: React.FC = () => {
+  return (
+    <div className="App">
+      <GameContainer />
+    </div>
+  );
+};
 
 export default App;

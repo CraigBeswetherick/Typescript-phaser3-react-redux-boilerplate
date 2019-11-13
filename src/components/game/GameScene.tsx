@@ -1,4 +1,4 @@
-import { INCREASE_SCORE, COMPLETE_LEVEL } from '../../actions';
+import { INCREASE_SCORE, COMPLETE_LEVEL } from "../../actions";
 
 interface Props {
   currentLevel: number;
@@ -8,13 +8,11 @@ export class GameScene extends Phaser.Scene {
   blitter!: Phaser.GameObjects.Blitter;
   gravity: number = 0.5;
   idx: number = 1;
-  frame = 'veg01';
-  numbers: any[] = [];
-  iter = 0;
+  numbers: Array<number> = [];
 
   constructor() {
     super({
-      key: 'GameScene'
+      key: "GameScene"
     });
   }
 
@@ -23,7 +21,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.atlas('atlas', 'images/veg.png', 'images/veg.json');
+    this.load.atlas("atlas", "images/veg.png", "images/veg.json");
   }
 
   create() {
@@ -31,7 +29,7 @@ export class GameScene extends Phaser.Scene {
 
     this.game.events.emit(INCREASE_SCORE, startEnts);
 
-    this.input.on('pointerdown', () => {
+    this.input.on("pointerdown", () => {
       // this.game.events.emit(COMPLETE_LEVEL, 1);
 
       this.game.events.emit(INCREASE_SCORE, startEnts);
@@ -41,37 +39,52 @@ export class GameScene extends Phaser.Scene {
       }
     });
 
-    this.blitter = this.add.blitter(0, 0, 'atlas');
+    this.blitter = this.add.blitter(0, 0, "atlas");
 
     for (var i = 0; i < 100; ++i) {
       this.launch();
     }
   }
 
-  update(time: number) {
+  checkScale = () => {
+    var gameDiv = document.getElementById("game");
+    if (gameDiv) {
+      console.log(gameDiv.clientHeight, this.game.renderer.height);
+
+      if (gameDiv.clientHeight > this.game.renderer.height) {
+        gameDiv.style.height = this.game.renderer.height.toString() + "px";
+        console.log("set");
+      }
+    }
+  };
+
+  update() {
     for (
       var index = 0, length = this.blitter.children.list.length;
       index < length;
       ++index
     ) {
-      var bob = this.blitter.children.list[index];
+      var bob: Phaser.GameObjects.Bob = this.blitter.children.list[index];
 
       bob.data.vy += this.gravity;
 
       bob.y += bob.data.vy;
       bob.x += bob.data.vx;
 
-      if (bob.x > screen.availWidth) {
-        bob.x = window.innerWidth;
-        bob.data.vx *= -bob.data.bounce;
+      if (bob.x + bob.data.chosenFrame.width > this.game.renderer.width) {
+        bob.x = this.game.renderer.width - bob.data.chosenFrame.width;
+        bob.data.vx *= -0.9;
       } else if (bob.x < 0) {
         bob.x = 0;
-        bob.data.vx *= -bob.data.bounce;
+        bob.data.vx *= -0.9;
       }
 
-      if (bob.y > window.innerHeight) {
-        bob.y = window.innerHeight;
-        bob.data.vy *= -bob.data.bounce;
+      if (bob.y + bob.data.chosenFrame.height > this.game.renderer.height) {
+        bob.y = this.game.renderer.height - bob.data.chosenFrame.height;
+        bob.data.vy *= -0.9;
+      } else if (bob.y < 0) {
+        bob.y = 0;
+        bob.data.vy *= -0.9;
       }
     }
   }
@@ -84,18 +97,27 @@ export class GameScene extends Phaser.Scene {
   launch() {
     this.idx++;
 
-    if (this.idx === 38) {
+    if (this.idx === 20) {
       this.idx = 1;
     }
 
+    let chosenFrame: Phaser.Textures.Frame;
+
     if (this.idx < 10) {
-      this.frame = 'veg0' + this.idx.toString();
+      chosenFrame = this.textures.getFrame(
+        "atlas",
+        "veg0" + this.idx.toString()
+      );
     } else {
-      this.frame = 'veg' + this.idx.toString();
+      chosenFrame = this.textures.getFrame(
+        "atlas",
+        "veg" + this.idx.toString()
+      );
     }
 
-    const bob = this.blitter.create(0, 0, this.frame);
+    const bob: Phaser.GameObjects.Bob = this.blitter.create(0, 0, chosenFrame);
 
+    bob.data.chosenFrame = chosenFrame;
     bob.data.vx = Math.random() * 10;
     bob.data.vy = Math.random() * 10;
     bob.data.bounce = 0.8 + Math.random() * 0.3;
