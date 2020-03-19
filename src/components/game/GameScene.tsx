@@ -57,7 +57,7 @@ export class GameScene extends Phaser.Scene {
       index < length;
       ++index
     ) {
-      var bob: CustomBob = this.blitter.children.list[index];
+      let bob: CustomBob = this.blitter.children.list[index];
 
       bob.data.vy += this.gravity;
 

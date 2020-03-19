@@ -29,13 +29,13 @@ export class GameView extends React.Component<Props> {
       width: window.innerWidth,
       height: window.innerHeight * 0.9,
       parent: 'game',
-      scene: GameScene
+      scene: GameScene,
     };
 
-          this.game = new Phaser.Game(config);
+    this.game = new Phaser.Game(config);
 
     this.game.scale.scaleMode = Phaser.Scale.RESIZE;
- 
+
     addListeners(this.game, this.props);
   }
 
@@ -45,7 +45,7 @@ export class GameView extends React.Component<Props> {
         <CurrentScoreContainer />
         <div id="game" />
       </div>
-    )
+    );
   }
 }
 
