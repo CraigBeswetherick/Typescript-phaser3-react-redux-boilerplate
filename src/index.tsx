@@ -1,19 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { reducers } from './reducers/index';
+import { reducers } from './Reducers/index';
 
 let state = {};
 
-let store = createStore(
-  reducers,
-  state,
-    applyMiddleware()
-);
+let store = createStore(reducers, state, applyMiddleware());
 
 ReactDOM.render(
   <Provider store={store}>

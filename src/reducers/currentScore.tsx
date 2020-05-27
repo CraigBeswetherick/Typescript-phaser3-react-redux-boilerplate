@@ -1,11 +1,11 @@
-import { INCREASE_SCORE, RESET_SCORE } from '../actions';
+import { INCREASE_SCORE, RESET_SCORE } from '../Actions';
 
 export interface CurrentScoreState {
   currentScore: number;
 }
 
 const defaultCurrentScoreState = (): CurrentScoreState => ({
-  currentScore: 0
+  currentScore: 0,
 });
 
 export const currentScoreReducer = (
@@ -24,7 +24,7 @@ export const currentScoreReducer = (
 
 const handleResetScoreReducer = (state: CurrentScoreState) => {
   return Object.assign({}, state, {
-    currentScore: 0
+    currentScore: 0,
   });
 };
 
@@ -33,6 +33,6 @@ const handleIncreaseScoreReducer = (
   increment: number
 ) => {
   return Object.assign({}, state, {
-    currentScore: state.currentScore + increment
+    currentScore: state.currentScore + increment,
   });
 };

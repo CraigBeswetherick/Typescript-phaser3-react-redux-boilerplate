@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { State } from '../../../reducers';
+import { State } from '../../../Reducers';
 import CurrentLevelView from './CurrentLevelView';
 
 const mapStateToProps = (state: State) => {
   return {
-    currentLevel: state.currentLevelReducer.currentLevel
+    currentLevel: state.currentLevelReducer.currentLevel,
   };
 };
 

@@ -1,8 +1,4 @@
-import { INCREASE_SCORE, COMPLETE_LEVEL } from '../../actions';
-
-interface Props {
-  currentLevel: number;
-}
+import { INCREASE_SCORE, COMPLETE_LEVEL } from '../../Actions';
 
 type CustomBob = {
   x: number;
@@ -16,23 +12,18 @@ export class GameScene extends Phaser.Scene {
   idx: number = 1;
   numbers: Array<number> = [];
   startEnts: number = 500;
+  currentLevel: number;
 
-  constructor() {
+  constructor(currentLevel: number) {
     super({
       key: 'GameScene',
     });
-  }
 
-  init(props: Props) {
-    console.log(props.currentLevel);
-  }
-
-  preload() {
-    this.load.atlas('atlas', 'images/veg.png', 'images/veg.json');
+    this.currentLevel = currentLevel;
   }
 
   create() {
-    this.blitter = this.add.blitter(0, 0, 'atlas');
+    this.blitter = this.add.blitter(0, 0, 'atlas' + this.currentLevel);
 
     this.game.events.emit(INCREASE_SCORE, this.startEnts);
 

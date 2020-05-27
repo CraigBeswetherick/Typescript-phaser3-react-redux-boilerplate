@@ -1,8 +1,9 @@
 import React from 'react';
 import 'phaser';
-import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from '../../actions';
+import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from '../../Actions';
+import { CurrentScoreContainer } from '../UI/CurrentScore';
+import { getPhaserConfig, GameOptions } from '../../Utils/PhaserConfig';
 import { GameScene } from './GameScene';
-import { CurrentScoreContainer } from '../ui/CurrentScore';
 
 interface Props {
   onIncreaseScore: Function;
@@ -11,43 +12,26 @@ interface Props {
   currentLevel: number;
 }
 
-interface GameOptions {
-  type: number;
-  width: number;
-  height: number;
-  parent: string;
-  scene: any;
-}
-export class GameView extends React.Component<Props> {
-  game: Phaser.Game;
+const GameView: React.FC<Props> = props => {
+  const config: GameOptions = getPhaserConfig(
+    new GameScene(props.currentLevel)
+  );
 
-  constructor(props: Props) {
-    super(props);
+  console.log(config);
 
-    const config: GameOptions = {
-      type: Phaser.CANVAS,
-      width: window.innerWidth,
-      height: window.innerHeight * 0.9,
-      parent: 'game',
-      scene: GameScene,
-    };
+  const game: Phaser.Game = new Phaser.Game(config);
 
-    this.game = new Phaser.Game(config);
+  game.scale.scaleMode = Phaser.Scale.RESIZE;
 
-    this.game.scale.scaleMode = Phaser.Scale.RESIZE;
+  addListeners(game, props);
 
-    addListeners(this.game, this.props);
-  }
-
-  render() {
-    return (
-      <div>
-        <CurrentScoreContainer />
-        <div id="game" />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <CurrentScoreContainer />
+      <div id="game" />
+    </div>
+  );
+};
 
 function addListeners(game: Phaser.Game, props: Props) {
   // This will be required for every custom event we want, unless i can figure out a way of doing it dynamically.
@@ -64,3 +48,5 @@ function addListeners(game: Phaser.Game, props: Props) {
     props.onResetScore();
   });
 }
+
+export default GameView;

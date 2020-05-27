@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { currentScoreReducer, CurrentScoreState } from './currentScore';
-import { currentLevelReducer, CurrentLevelState } from './currentLevel';
+import { currentScoreReducer, CurrentScoreState } from './CurrentScore';
+import { currentLevelReducer, CurrentLevelState } from './CurrentLevel';
 
 export interface State {
   currentScoreReducer: CurrentScoreState;
@@ -9,5 +9,5 @@ export interface State {
 
 export const reducers = combineReducers<State>({
   currentScoreReducer,
-  currentLevelReducer
+  currentLevelReducer,
 });

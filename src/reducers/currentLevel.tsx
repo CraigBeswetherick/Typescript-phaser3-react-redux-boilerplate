@@ -1,11 +1,11 @@
-import { COMPLETE_LEVEL } from '../actions';
+import { COMPLETE_LEVEL } from '../Actions';
 
 export interface CurrentLevelState {
   currentLevel: number;
 }
 
 const defaultCurrentLevelState = (): CurrentLevelState => ({
-  currentLevel: 0
+  currentLevel: 0,
 });
 
 export const currentLevelReducer = (
@@ -22,6 +22,6 @@ export const currentLevelReducer = (
 
 const handleCompleteLevelReducer = (state: CurrentLevelState) => {
   return Object.assign({}, state, {
-    currentLevel: state.currentLevel + 1
+    currentLevel: state.currentLevel + 1,
   });
 };

@@ -5,7 +5,11 @@ interface Props {
 }
 
 const CurrentScoreView = (props: Props) => {
-  return <div className='score'><p>Current Entities: {props.currentScore}</p></div>;
+  return (
+    <div className="score">
+      <p>Current Entities: {props.currentScore}</p>
+    </div>
+  );
 };
 
 export default CurrentScoreView;

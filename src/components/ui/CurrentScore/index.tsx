@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { State } from '../../../reducers';
+import { State } from '../../../Reducers';
 import CurrentScoreView from './CurrentScoreView';
 
 const mapStateToProps = (state: State) => {
   return {
-    currentScore: state.currentScoreReducer.currentScore
+    currentScore: state.currentScoreReducer.currentScore,
   };
 };
 
