@@ -1,19 +1,33 @@
 import { connect } from 'react-redux';
 import { State } from '../../Reducers';
 import GameView from './GameView';
-import { completeLevel, increaseScore, resetScore } from '../../Actions';
+import {
+  increaseScore,
+  resetScore,
+  increaseDate,
+  buyBusiness,
+  buyManager,
+} from '../../Actions';
 
 const mapStateToProps = (state: State) => {
   return {
-    currentLevel: state.currentLevelReducer.currentLevel,
+    currentDate: state.currentScoreReducer.currentDate,
+    businesses: state.currentScoreReducer.businesses,
+    managers: state.currentScoreReducer.managers,
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onCompleteLevel: () => dispatch(completeLevel()),
     onIncreaseScore: (increment: number) => dispatch(increaseScore(increment)),
     onResetScore: () => dispatch(resetScore()),
+    onIncreaseDate: () => dispatch(increaseDate()),
+    onBuyBusiness: (businessId: number) => {
+      dispatch(buyBusiness(businessId));
+    },
+    onBuyManager: (managerId: number) => {
+      dispatch(buyManager(managerId));
+    },
   };
 };
 

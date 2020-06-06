@@ -1,29 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'phaser';
-import { COMPLETE_LEVEL, INCREASE_SCORE, RESET_SCORE } from '../../Actions';
+import {
+  INCREASE_SCORE,
+  RESET_SCORE,
+  INCREASE_DATE,
+  BUY_BUSINESS,
+  BUY_MANAGER,
+} from '../../Actions';
 import { CurrentScoreContainer } from '../UI/CurrentScore';
 import { getPhaserConfig, GameOptions } from '../../Utils/PhaserConfig';
-import { GameScene } from './GameScene';
+import { PreloaderScene } from './PreloaderScene';
 
 interface Props {
   onIncreaseScore: Function;
-  onCompleteLevel: Function;
   onResetScore: Function;
-  currentLevel: number;
+  onIncreaseDate: Function;
+  onBuyBusiness: Function;
+  onBuyManager: Function;
 }
 
 const GameView: React.FC<Props> = props => {
-  const config: GameOptions = getPhaserConfig(
-    new GameScene(props.currentLevel)
-  );
+  const config: GameOptions = getPhaserConfig();
+  useEffect(() => {
+    const game: Phaser.Game = new Phaser.Game(config);
 
-  console.log(config);
+    game.scene.add('preloader', new PreloaderScene(), true);
 
-  const game: Phaser.Game = new Phaser.Game(config);
+    game.scale.scaleMode = Phaser.Scale.FIT;
 
-  game.scale.scaleMode = Phaser.Scale.RESIZE;
-
-  addListeners(game, props);
+    addListeners(game, props);
+  });
 
   return (
     <div>
@@ -34,18 +40,24 @@ const GameView: React.FC<Props> = props => {
 };
 
 function addListeners(game: Phaser.Game, props: Props) {
-  // This will be required for every custom event we want, unless i can figure out a way of doing it dynamically.
-  game.events.on(COMPLETE_LEVEL, (level: number) => {
-    // do some cool animation.
-    props.onCompleteLevel();
-  });
-
   game.events.on(INCREASE_SCORE, (amount: number) => {
     props.onIncreaseScore(amount);
   });
 
   game.events.on(RESET_SCORE, () => {
     props.onResetScore();
+  });
+
+  game.events.on(INCREASE_DATE, () => {
+    props.onIncreaseDate();
+  });
+
+  game.events.on(BUY_BUSINESS, (businessId: number) => {
+    props.onBuyBusiness(businessId);
+  });
+
+  game.events.on(BUY_MANAGER, (managerId: number) => {
+    props.onBuyManager(managerId);
   });
 }
 

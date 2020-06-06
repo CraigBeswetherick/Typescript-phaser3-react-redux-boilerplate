@@ -1,109 +1,153 @@
-import { INCREASE_SCORE, COMPLETE_LEVEL } from '../../Actions';
-
-type CustomBob = {
-  x: number;
-  y: number;
-  data: any;
-};
+import { INCREASE_SCORE, INCREASE_DATE } from '../../Actions';
+import { ManagerScene } from '../Managers/ManagerScene';
+import { BusinessScene } from '../Business/BusinessScene';
+import { Button } from './Button';
+import {
+  GAME_SCENE,
+  PRELOADER_SCENE,
+  MANAGER_SCENE,
+  BUSINESS_SCENE,
+  GAME_SCALE,
+} from '../../Utils/constants';
 
 export class GameScene extends Phaser.Scene {
-  blitter!: Phaser.GameObjects.Blitter;
-  gravity: number = 0.5;
-  idx: number = 1;
-  numbers: Array<number> = [];
-  startEnts: number = 500;
-  currentLevel: number;
+  background: Phaser.GameObjects.Image;
 
-  constructor(currentLevel: number) {
+  constructor() {
     super({
-      key: 'GameScene',
+      key: GAME_SCENE,
     });
-
-    this.currentLevel = currentLevel;
   }
 
   create() {
-    this.blitter = this.add.blitter(0, 0, 'atlas' + this.currentLevel);
-
-    this.game.events.emit(INCREASE_SCORE, this.startEnts);
-
-    while (this.startEnts > 0) {
-      this.startEnts--;
-      this.launch();
-    }
+    this.game.scene.remove(PRELOADER_SCENE);
 
     this.input.on('pointerdown', () => {
-      const amount = 50;
-      for (var i = 0; i < amount; ++i) {
-        this.launch();
-      }
-
-      this.game.events.emit(INCREASE_SCORE, amount);
+      this.game.events.emit(INCREASE_SCORE, 1);
     });
+
+    this.tweens.addCounter({
+      to: 1,
+      from: 0,
+      ease: 'Power1',
+      duration: 500,
+      yoyo: true,
+      repeat: -1,
+      onYoyo: () => {
+        this.game.events.emit(INCREASE_DATE);
+      },
+    });
+
+    this.addBackground();
+    this.addButtons();
   }
 
-  update() {
-    for (
-      var index = 0, length = this.blitter.children.list.length;
-      index < length;
-      ++index
-    ) {
-      let bob: CustomBob = this.blitter.children.list[index];
+  addBackground() {
+    const { width, height } = this.sys.game.canvas;
+    this.background = this.add.image(width / 2, height / 2, 'background');
 
-      bob.data.vy += this.gravity;
+    const scale: number = Math.max(
+      width / this.background.width,
+      height / this.background.height
+    );
 
-      bob.y += bob.data.vy;
-      bob.x += bob.data.vx;
-
-      if (bob.x + bob.data.chosenFrame.width > this.game.renderer.width) {
-        bob.x = this.game.renderer.width - bob.data.chosenFrame.width;
-        bob.data.vx *= -0.9;
-      } else if (bob.x < 0) {
-        bob.x = 0;
-        bob.data.vx *= -0.9;
-      }
-
-      if (bob.y + bob.data.chosenFrame.height > this.game.renderer.height) {
-        bob.y = this.game.renderer.height - bob.data.chosenFrame.height;
-        bob.data.vy *= -0.9;
-      } else if (bob.y < 0) {
-        bob.y = 0;
-        bob.data.vy *= -0.9;
-      }
-    }
+    this.background.scaleX = scale;
+    this.background.scaleY = scale;
   }
+
+  openManagerScene = () => {
+    this.game.scene.add(MANAGER_SCENE, ManagerScene, true, {
+      isPurchasedScreen: false,
+    });
+  };
+
+  openBusinessScene = () => {
+    this.game.scene.add(BUSINESS_SCENE, BusinessScene, true, {
+      isPurchasedScreen: false,
+    });
+  };
+
+  openPurchasedManagerScene = () => {
+    this.game.scene.add(MANAGER_SCENE, ManagerScene, true, {
+      isPurchasedScreen: true,
+    });
+  };
+
+  openPurchasedBusinessScene = () => {
+    this.game.scene.add(BUSINESS_SCENE, BusinessScene, true, {
+      isPurchasedScreen: true,
+    });
+  };
+
+  addButtons() {
+    const { width } = this.sys.game.canvas;
+
+    this.addButton(
+      40 * GAME_SCALE,
+      30 * GAME_SCALE,
+      this.openPurchasedManagerScene,
+      'Purchased\nManagers'
+    );
+    this.addButton(
+      40 * GAME_SCALE,
+      120 * GAME_SCALE,
+      this.openPurchasedBusinessScene,
+      'Purchased\nBusinesses'
+    );
+
+    this.addButton(
+      width - 200 * GAME_SCALE,
+      30 * GAME_SCALE,
+      this.openManagerScene,
+      'Managers'
+    );
+    this.addButton(
+      width - 200 * GAME_SCALE,
+      120 * GAME_SCALE,
+      this.openBusinessScene,
+      'Businesses'
+    );
+  }
+
+  addButton(x: number, y: number, callback: Function, text: string) {
+    const btn = new Button(
+      this,
+      x,
+      y,
+      'atlas',
+      () => {
+        callback();
+      },
+      'hover.png',
+      'normal.png',
+      'down.png'
+    );
+    btn.setOrigin(0);
+    btn.scaleX = btn.scaleY = 0.6 * GAME_SCALE;
+    this.add.existing(btn);
+    const textX = 97 * GAME_SCALE;
+
+    this.addText(x + textX, y + 41 * GAME_SCALE, text);
+  }
+
+  addText = (x: number, y: number, text: string) => {
+    const textField = this.add.text(x, y, text, {
+      fontFamily: 'Roboto',
+      fontSize: 24 * GAME_SCALE,
+      color: '#000',
+    });
+
+    textField.displayOriginX = textField.displayOriginY = 0.5;
+    textField.x -= textField.width / 2;
+    textField.y -= textField.height / 2;
+  };
+
+  update() {}
 
   destroy() {
     // We want to keep the assets in the cache and leave the renderer for reuse.
     this.game.destroy(true);
   }
 
-  launch() {
-    this.idx++;
-
-    if (this.idx === 20) {
-      this.idx = 1;
-    }
-
-    let chosenFrame: Phaser.Textures.Frame;
-
-    if (this.idx < 10) {
-      chosenFrame = this.textures.getFrame(
-        'atlas',
-        'veg0' + this.idx.toString()
-      );
-    } else {
-      chosenFrame = this.textures.getFrame(
-        'atlas',
-        'veg' + this.idx.toString()
-      );
-    }
-
-    const bob: CustomBob = this.blitter.create(0, 0, chosenFrame);
-
-    bob.data.chosenFrame = chosenFrame;
-    bob.data.vx = Math.random() * 10;
-    bob.data.vy = Math.random() * 10;
-    bob.data.bounce = 0.8 + Math.random() * 0.3;
-  }
+  launch() {}
 }

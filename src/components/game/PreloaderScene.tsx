@@ -1,20 +1,22 @@
-import history from '../../Utils/History';
+import { GameScene } from './GameScene';
+import {
+  PRELOADER_SCENE,
+  GAME_SCENE,
+  GAME_WIDTH,
+  GAME_HEIGHT,
+  setGameScale,
+} from '../../Utils/constants';
 
-interface Props {
-  currentLevel: number;
-}
+interface Props {}
 
 export class PreloaderScene extends Phaser.Scene {
-  currentLevel: number;
   preloaderBg: Phaser.GameObjects.Graphics;
   preloaderBar: Phaser.GameObjects.Graphics;
 
-  constructor(currentLevel: number) {
+  constructor() {
     super({
-      key: 'Preloader',
+      key: PRELOADER_SCENE,
     });
-
-    this.currentLevel = currentLevel;
   }
 
   createLoaderGraphic = () => {
@@ -23,7 +25,6 @@ export class PreloaderScene extends Phaser.Scene {
     const x: number = this.scale.gameSize.width / 2 - width / 2;
     const y: number = this.scale.gameSize.height / 2 - height / 2;
 
-    console.log(x, y, width, height);
     this.preloaderBg = this.add.graphics();
     this.preloaderBg.fillStyle(0xff0000);
     this.preloaderBg.fillRect(x, y, width, height);
@@ -35,27 +36,44 @@ export class PreloaderScene extends Phaser.Scene {
   };
 
   create() {
+    const { width, height } = this.sys.game.canvas;
+    setGameScale(Math.min(width / GAME_WIDTH, height / GAME_HEIGHT));
+
     this.createLoaderGraphic();
-
-    this.load.atlas(
-      'atlas' + this.currentLevel,
-      'images/' + this.currentLevel + '.png',
-      'images/' + this.currentLevel + '.json'
-    );
-
-    this.load.start();
+    this.load.setCORS('anonymous');
+    this.load.atlas('atlas', 'images/assets.png', 'images/assets.json');
+    this.load.image('background', 'images/background.png');
     this.load.on('progress', this.updateLoaderGraphic);
     this.load.on('complete', this.handleLevelLoaded);
-    console.log('loading assets for level ' + this.currentLevel);
+    this.load.start();
   }
 
   updateLoaderGraphic = (progress: number) => {
-    console.log(progress);
     this.preloaderBar.scaleX = progress;
   };
 
   handleLevelLoaded = () => {
-    history.push('/game');
+    this.tweens.add({
+      targets: this.preloaderBg,
+      alpha: 0,
+      delay: 500,
+      duration: 1500,
+      onComplete: () => {
+        this.playGame();
+      },
+    });
+
+    this.tweens.add({
+      targets: this.preloaderBar,
+      alpha: 0,
+      delay: 500,
+      duration: 1500,
+    });
+  };
+
+  playGame = () => {
+    this.game.scene.add(GAME_SCENE, new GameScene(), true);
+    this.destroy();
   };
 
   destroy = () => {

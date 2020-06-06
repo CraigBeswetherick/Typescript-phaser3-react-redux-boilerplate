@@ -5,7 +5,7 @@ export interface GameOptions {
   parent: string;
 }
 
-export function getPhaserConfig(scene: Phaser.Scene): GameOptions {
+export function getPhaserConfig(): GameOptions {
   return {
     type: Phaser.CANVAS,
     width: window.innerWidth,
