@@ -5,6 +5,7 @@ export interface Manager {
   Cost: number;
   Bonus: number;
   Avatar: string;
+  CurrentLevel: number;
 }
 
 export interface CurrentManagerState {
@@ -20,30 +21,35 @@ const defaultCurrentManagerState = (): CurrentManagerState => ({
       Cost: 7000,
       Bonus: 6,
       Avatar: 'Nigel.png',
+      CurrentLevel: 1,
     },
     {
       Name: 'Jonathan Jimmyjam',
       Cost: 6000,
       Bonus: 4,
       Avatar: 'Jonathan.png',
+      CurrentLevel: 1,
     },
     {
       Name: 'Craig Dilly',
       Cost: 7000,
       Bonus: 4,
       Avatar: 'Craig.png',
+      CurrentLevel: 1,
     },
     {
       Name: 'Michael Carter',
       Cost: 15000,
       Bonus: 10,
       Avatar: 'Micheal.png',
+      CurrentLevel: 1,
     },
     {
       Name: 'Tom Fairfield',
       Cost: 12000,
       Bonus: 8,
       Avatar: 'Micheal.png',
+      CurrentLevel: 1,
     },
 
     {
@@ -51,6 +57,7 @@ const defaultCurrentManagerState = (): CurrentManagerState => ({
       Cost: 12000,
       Bonus: 8,
       Avatar: 'Linda.png',
+      CurrentLevel: 1,
     },
   ],
 });

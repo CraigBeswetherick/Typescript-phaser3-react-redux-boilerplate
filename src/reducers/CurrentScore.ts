@@ -73,7 +73,11 @@ const handleIncreaseDateReducer = (
 
   if (state.currentDate.getDay() === 5) {
     businesses.forEach((business: Business) => {
-      increment += business.BaseEarnings;
+      increment += business.BaseEarnings * business.CurrentLevel;
+
+      if (business.Manager) {
+        increment *= business.Manager.Bonus * business.Manager.CurrentLevel;
+      }
     });
   }
 

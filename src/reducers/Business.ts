@@ -1,11 +1,14 @@
 import { BUY_BUSINESS } from '../Actions';
+import { Manager } from './Managers';
 
 export interface Business {
   Name: string;
   Cost: number;
   BaseEarnings: number;
-  UpgradeImprovementValue: number;
+  UpgradeImprovementCost: number;
   Avatar: string;
+  CurrentLevel: number;
+  Manager?: Manager;
 }
 
 export interface CurrentBusinessState {
@@ -20,48 +23,60 @@ const defaultBusinessState = (): CurrentBusinessState => ({
       Name: 'Dangerous Computers',
       Cost: 4000,
       BaseEarnings: 50,
-      UpgradeImprovementValue: 50,
+      UpgradeImprovementCost: 50,
       Avatar: 'computers.png',
+      CurrentLevel: 1,
+      Manager: undefined,
     },
 
     {
       Name: 'Silly Suasages',
       Cost: 6000,
       BaseEarnings: 70,
-      UpgradeImprovementValue: 70,
+      UpgradeImprovementCost: 70,
       Avatar: 'silly.png',
+      CurrentLevel: 1,
+      Manager: undefined,
     },
 
     {
       Name: 'Pogomons',
       Cost: 8000,
       BaseEarnings: 100,
-      UpgradeImprovementValue: 150,
+      UpgradeImprovementCost: 150,
       Avatar: 'pogomons.png',
+      CurrentLevel: 1,
+      Manager: undefined,
     },
 
     {
       Name: 'Cat Picture Factory Inc',
       Cost: 10000,
       BaseEarnings: 150,
-      UpgradeImprovementValue: 200,
+      UpgradeImprovementCost: 200,
       Avatar: 'cat.png',
+      CurrentLevel: 1,
+      Manager: undefined,
     },
 
     {
       Name: 'Sloppy Diner Co',
       Cost: 12000,
       BaseEarnings: 180,
-      UpgradeImprovementValue: 220,
+      UpgradeImprovementCost: 220,
       Avatar: 'sloppy.png',
+      CurrentLevel: 1,
+      Manager: undefined,
     },
 
     {
       Name: 'Microquality Computers',
       Cost: 20000,
       BaseEarnings: 250,
-      UpgradeImprovementValue: 300,
+      UpgradeImprovementCost: 300,
       Avatar: 'microquality.png',
+      CurrentLevel: 1,
+      Manager: undefined,
     },
   ],
 });
