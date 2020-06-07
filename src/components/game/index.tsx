@@ -1,13 +1,7 @@
 import { connect } from 'react-redux';
 import { State } from '../../Reducers';
 import GameView from './GameView';
-import {
-  increaseScore,
-  resetScore,
-  increaseDate,
-  buyBusiness,
-  buyManager,
-} from '../../Actions';
+import { increaseDate, buyBusiness, buyManager } from '../../Actions';
 import { Manager } from '../../Reducers/Managers';
 import { Business } from '../../Reducers/Business';
 
@@ -21,9 +15,8 @@ const mapStateToProps = (state: State) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onIncreaseScore: (increment: number) => dispatch(increaseScore(increment)),
-    onResetScore: () => dispatch(resetScore()),
-    onIncreaseDate: () => dispatch(increaseDate()),
+    onIncreaseDate: (businesses: Array<Business>, managers: Array<Manager>) =>
+      dispatch(increaseDate(businesses, managers)),
     onBuyBusiness: (businessId: number, business: Business) => {
       dispatch(buyBusiness(businessId, business));
     },

@@ -14,16 +14,18 @@ export const BUY_BUSINESS: string = 'BUY_BUSINESS';
  * action creators
  */
 
-export function increaseScore(increment: number) {
-  return { type: INCREASE_SCORE, increment };
+export function increaseScore(
+  businesses: Array<Business>,
+  managers: Array<Manager>
+) {
+  return { type: INCREASE_SCORE, businesses, managers };
 }
 
-export function resetScore() {
-  return { type: INCREASE_SCORE };
-}
-
-export function increaseDate() {
-  return { type: INCREASE_DATE };
+export function increaseDate(
+  businesses: Array<Business>,
+  managers: Array<Manager>
+) {
+  return { type: INCREASE_DATE, businesses, managers };
 }
 
 export function buyManager(managerId: number, manager: Manager) {

@@ -26,11 +26,19 @@ export const currentScoreReducer = (
 ) => {
   switch (action.type) {
     case INCREASE_SCORE:
-      return handleIncreaseScoreReducer(state, action.increment);
+      return handleIncreaseScoreReducer(
+        state,
+        action.businesses,
+        action.managers
+      );
     case RESET_SCORE:
       return handleResetScoreReducer(state);
     case INCREASE_DATE:
-      return handleIncreaseDateReducer(state);
+      return handleIncreaseDateReducer(
+        state,
+        action.businesses,
+        action.managers
+      );
     case BUY_BUSINESS:
       return handleBuyBusiness(state, action.business);
     case BUY_MANAGER:
@@ -48,17 +56,31 @@ const handleResetScoreReducer = (state: CurrentScoreState) => {
 
 const handleIncreaseScoreReducer = (
   state: CurrentScoreState,
-  increment: number
+  businesses: Array<Business>,
+  managers: Array<Manager>
 ) => {
-  return Object.assign({}, state, {
-    currentScore: state.currentScore + increment,
-  });
+  return Object.assign({}, state, {});
 };
 
-const handleIncreaseDateReducer = (state: CurrentScoreState) => {
+const handleIncreaseDateReducer = (
+  state: CurrentScoreState,
+  businesses: Array<Business>,
+  managers: Array<Manager>
+) => {
   state.currentDate.setDate(state.currentDate.getDate() + 1);
+
+  let increment: number = 0;
+
+  if (state.currentDate.getDay() === 5) {
+    businesses.forEach((business: Business) => {
+      increment += business.BaseEarnings;
+    });
+  }
+
   return Object.assign({}, state, {
+    ...state,
     timePlayed: state.timePlayed + 1,
+    currentScore: state.currentScore + increment,
   });
 };
 
