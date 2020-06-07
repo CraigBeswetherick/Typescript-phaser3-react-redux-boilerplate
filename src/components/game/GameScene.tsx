@@ -112,7 +112,7 @@ export class GameScene extends Phaser.Scene {
 
     this.addButton(
       40 * GAME_SCALE,
-      30 * GAME_SCALE,
+      100 * GAME_SCALE,
       () => {
         this.openSceneOverlay(MANAGER_SCENE, new ManagerScene(), true);
       },
@@ -120,7 +120,7 @@ export class GameScene extends Phaser.Scene {
     );
     this.addButton(
       40 * GAME_SCALE,
-      120 * GAME_SCALE,
+      200 * GAME_SCALE,
       () => {
         this.openSceneOverlay(BUSINESS_SCENE, new BusinessScene(), true);
       },
@@ -129,7 +129,7 @@ export class GameScene extends Phaser.Scene {
 
     this.addButton(
       width - 200 * GAME_SCALE,
-      30 * GAME_SCALE,
+      100 * GAME_SCALE,
       () => {
         this.openSceneOverlay(MANAGER_SCENE, new ManagerScene(), false);
       },
@@ -137,7 +137,7 @@ export class GameScene extends Phaser.Scene {
     );
     this.addButton(
       width - 200 * GAME_SCALE,
-      120 * GAME_SCALE,
+      200 * GAME_SCALE,
       () => {
         this.openSceneOverlay(BUSINESS_SCENE, new BusinessScene(), false);
       },
