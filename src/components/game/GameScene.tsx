@@ -146,7 +146,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   addButton(x: number, y: number, callback: Function, text: string) {
-    const btn = new Button(
+    new Button(
       this,
       x,
       y,
@@ -156,11 +156,10 @@ export class GameScene extends Phaser.Scene {
       },
       'hover.png',
       'normal.png',
-      'down.png'
+      'down.png',
+      []
     );
-    btn.setOrigin(0);
-    btn.scaleX = btn.scaleY = 0.6 * GAME_SCALE;
-    this.add.existing(btn);
+
     const textX = 97 * GAME_SCALE;
 
     addText(x + textX, y + 24 * GAME_SCALE, text, this);

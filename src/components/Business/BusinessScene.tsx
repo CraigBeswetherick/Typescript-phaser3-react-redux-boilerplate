@@ -5,13 +5,16 @@ import {
   addCloseButton,
   addBackground,
   addButton,
+  checkButtons,
 } from '../../Utils/UIUtils';
 import store from '../../Utils/Store';
 import { Business } from '../../Reducers/Business';
+import { Button } from '../Game/Button';
 
 export class BusinessScene extends Phaser.Scene {
   background: Phaser.GameObjects.Graphics;
   isPurchasedScreen: boolean;
+  buttons: Array<Button> = [];
 
   constructor() {
     super({
@@ -30,11 +33,7 @@ export class BusinessScene extends Phaser.Scene {
     this.addButtons();
   }
 
-  selectBusiness = (
-    index: number,
-    btn: Phaser.GameObjects.Container,
-    business: Business
-  ) => {
+  selectBusiness = (index: number, btn: Button, business: Business) => {
     if (this.isPurchasedScreen) {
       this.upgradeBusiness(index, btn, business);
     } else {
@@ -42,12 +41,10 @@ export class BusinessScene extends Phaser.Scene {
     }
   };
 
-  purchaseBusiness = (
-    index: number,
-    btn: Phaser.GameObjects.Container,
-    business: Business
-  ) => {
+  purchaseBusiness = (index: number, btn: Button, business: Business) => {
     this.game.events.emit(BUY_BUSINESS, index, business);
+    this.buttons.splice(this.buttons.indexOf(btn), 1);
+    checkButtons(this.buttons);
     btn.destroy();
   };
 
@@ -55,7 +52,9 @@ export class BusinessScene extends Phaser.Scene {
     index: number,
     btn: Phaser.GameObjects.Container,
     business: Business
-  ) => {};
+  ) => {
+    checkButtons(this.buttons);
+  };
 
   addButtons() {
     const topMargin: number = 100 * GAME_SCALE;
@@ -76,7 +75,7 @@ export class BusinessScene extends Phaser.Scene {
     }
 
     data.forEach((data: Business, index: number) => {
-      addButton(
+      let button = addButton(
         x,
         y + 100 * index * GAME_SCALE,
         [
@@ -84,7 +83,9 @@ export class BusinessScene extends Phaser.Scene {
           ' Cost $' + data.Cost.toString(),
           ' Earnings : ' + data.BaseEarnings,
         ],
-        this.selectBusiness,
+        () => {
+          this.selectBusiness(index, button, data);
+        },
         index,
         this,
         data.Cost > store.getState().currentScoreReducer.currentScore &&
@@ -96,6 +97,8 @@ export class BusinessScene extends Phaser.Scene {
         x += padding;
         y -= 200 * GAME_SCALE;
       }
+
+      this.buttons.push(button);
     });
 
     addCloseButton(this, BUSINESS_SCENE);

@@ -5,6 +5,7 @@ import {
   addCloseButton,
   addBackground,
   addButton,
+  checkButtons,
 } from '../../Utils/UIUtils';
 import store from '../../Utils/Store';
 import { Manager } from '../../Reducers/Managers';
@@ -14,7 +15,7 @@ export class ManagerScene extends Phaser.Scene {
   background: Phaser.GameObjects.Graphics;
   isPurchasedScreen: boolean;
   notEnoughCash: Phaser.GameObjects.Text;
-  buttons: Array<Button>;
+  buttons: Array<Button> = [];
 
   constructor() {
     super({
@@ -33,11 +34,7 @@ export class ManagerScene extends Phaser.Scene {
     this.addButtons();
   }
 
-  selectManager = (
-    index: number,
-    btn: Phaser.GameObjects.Container,
-    manager: Manager
-  ) => {
+  selectManager = (index: number, btn: Button, manager: Manager) => {
     if (this.isPurchasedScreen) {
       this.handleUpgradeManager(index, btn, manager);
     } else {
@@ -45,20 +42,14 @@ export class ManagerScene extends Phaser.Scene {
     }
   };
 
-  handleBuyManager(
-    index: number,
-    btn: Phaser.GameObjects.Container,
-    manager: Manager
-  ) {
+  handleBuyManager(index: number, btn: Button, manager: Manager) {
     this.game.events.emit(BUY_MANAGER, index, manager);
+    this.buttons.splice(this.buttons.indexOf(btn), 1);
+    checkButtons(this.buttons);
     btn.destroy();
   }
 
-  handleUpgradeManager(
-    index: number,
-    btn: Phaser.GameObjects.Container,
-    manager: Manager
-  ) {}
+  handleUpgradeManager(index: number, btn: Button, manager: Manager) {}
 
   addButtons() {
     const topMargin: number = 100 * GAME_SCALE;
@@ -90,13 +81,13 @@ export class ManagerScene extends Phaser.Scene {
         data.Cost > store.getState().currentScoreReducer.currentScore
       ) {
         isDisabled = true;
-      } else {
-        if (!this.isPurchasedScreen) {
-          isDisabled = false;
-        }
       }
 
-      addButton(
+      if (this.isPurchasedScreen) {
+        isDisabled = false;
+      }
+
+      let btn = addButton(
         x,
         y + 100 * index * GAME_SCALE,
         [
@@ -104,12 +95,16 @@ export class ManagerScene extends Phaser.Scene {
           ' Cost $' + data.Cost.toString(),
           ' Skill Level: ' + data.Bonus.toString() + '/10',
         ],
-        this.selectManager,
+        () => {
+          this.selectManager(index, btn, data);
+        },
         index,
         this,
         isDisabled,
         data
       );
+
+      this.buttons.push(btn);
 
       if (index === 1 || index === 3) {
         x += padding;

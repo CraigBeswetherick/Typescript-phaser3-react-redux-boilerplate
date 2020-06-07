@@ -1,5 +1,6 @@
 import { Button } from '../Components/Game/Button';
 import { GAME_SCALE, GAME_SCENE } from './constants';
+import store from './Store';
 
 export const addHeader = (scene: Phaser.Scene, text: string) => {
   const fontSize: number = 40 * GAME_SCALE;
@@ -10,13 +11,23 @@ export const addHeader = (scene: Phaser.Scene, text: string) => {
   });
 };
 
+export const checkButtons = (buttons: Array<Button>) => {
+  buttons.forEach((button: Button) => {
+    const isDisabled: boolean =
+      button.dataRef.Cost > store.getState().currentScoreReducer.currentScore;
+    if (isDisabled) {
+      button.disableButton();
+    }
+  });
+};
+
 export const addCloseButton = (scene: Phaser.Scene, sceneId: string) => {
   const { width } = scene.sys.game.canvas;
 
   const btn = new Button(
     scene,
-    width,
-    43 * GAME_SCALE,
+    width - 90 * GAME_SCALE,
+    48 * GAME_SCALE,
     'atlas',
     () => {
       scene.game.scene.remove(sceneId);
@@ -24,12 +35,11 @@ export const addCloseButton = (scene: Phaser.Scene, sceneId: string) => {
     },
     'small-hover.png',
     'small-normal.png',
-    'small-down.png'
+    'small-down.png',
+    []
   );
-  btn.setOrigin(0);
-  btn.scaleX = btn.scaleY = 0.25 * GAME_SCALE;
-  btn.x -= 95 * GAME_SCALE;
-  scene.add.existing(btn);
+
+  btn.scaleX = btn.scaleY = 0.35;
 };
 
 export const addText = (
@@ -84,40 +94,22 @@ export const addButton = (
   isDisabled: boolean = false,
   data: any = null
 ) => {
-  let container: Phaser.GameObjects.Container = scene.add.container(x, y);
-
   const btn = new Button(
     scene,
-    0,
-    0,
+    x,
+    y,
     'atlas',
     () => {
-      callback(index, container, data);
+      callback(index, data);
     },
     'hover.png',
     'normal.png',
     'down.png',
+    labels,
     'disabled.png',
-    isDisabled
+    isDisabled,
+    data
   );
-  btn.setOrigin(0);
-  btn.scaleX = 0.6 * GAME_SCALE;
-  btn.scaleY = 0.65 * GAME_SCALE;
-  container.add(btn);
-
-  const textX = 90 * GAME_SCALE;
-  const topPadding: number = btn.height / labels.length - 30;
-
-  labels.forEach((label: string, index: number) => {
-    container.add(
-      addText(
-        textX,
-        topPadding * GAME_SCALE + 18 * index * GAME_SCALE,
-        label,
-        scene
-      )
-    );
-  });
 
   return btn;
 };
