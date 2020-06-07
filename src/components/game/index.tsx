@@ -8,12 +8,14 @@ import {
   buyBusiness,
   buyManager,
 } from '../../Actions';
+import { Manager } from '../../Reducers/Managers';
+import { Business } from '../../Reducers/Business';
 
 const mapStateToProps = (state: State) => {
   return {
     currentDate: state.currentScoreReducer.currentDate,
-    businesses: state.currentScoreReducer.businesses,
-    managers: state.currentScoreReducer.managers,
+    businesses: state.businessReducer.businesses,
+    managers: state.managerReducer.managers,
   };
 };
 
@@ -22,11 +24,11 @@ const mapDispatchToProps = (dispatch: any) => {
     onIncreaseScore: (increment: number) => dispatch(increaseScore(increment)),
     onResetScore: () => dispatch(resetScore()),
     onIncreaseDate: () => dispatch(increaseDate()),
-    onBuyBusiness: (businessId: number) => {
-      dispatch(buyBusiness(businessId));
+    onBuyBusiness: (businessId: number, business: Business) => {
+      dispatch(buyBusiness(businessId, business));
     },
-    onBuyManager: (managerId: number) => {
-      dispatch(buyManager(managerId));
+    onBuyManager: (managerId: number, manager: Manager) => {
+      dispatch(buyManager(managerId, manager));
     },
   };
 };

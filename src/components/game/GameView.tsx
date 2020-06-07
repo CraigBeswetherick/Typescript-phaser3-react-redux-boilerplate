@@ -10,6 +10,8 @@ import {
 import { CurrentScoreContainer } from '../UI/CurrentScore';
 import { getPhaserConfig, GameOptions } from '../../Utils/PhaserConfig';
 import { PreloaderScene } from './PreloaderScene';
+import { Manager } from '../../Reducers/Managers';
+import { Business } from '../../Reducers/Business';
 
 interface Props {
   onIncreaseScore: Function;
@@ -50,12 +52,12 @@ function addListeners(game: Phaser.Game, props: Props) {
     props.onIncreaseDate();
   });
 
-  game.events.on(BUY_BUSINESS, (businessId: number) => {
-    props.onBuyBusiness(businessId);
+  game.events.on(BUY_BUSINESS, (businessId: number, business: Business) => {
+    props.onBuyBusiness(businessId, business);
   });
 
-  game.events.on(BUY_MANAGER, (managerId: number) => {
-    props.onBuyManager(managerId);
+  game.events.on(BUY_MANAGER, (managerId: number, manager: Manager) => {
+    props.onBuyManager(managerId, manager);
   });
 }
 

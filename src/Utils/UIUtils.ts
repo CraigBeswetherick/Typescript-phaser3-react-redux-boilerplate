@@ -81,7 +81,8 @@ export const addButton = (
   callback: Function,
   index: number,
   scene: Phaser.Scene,
-  isDisabled: boolean = false
+  isDisabled: boolean = false,
+  data: any = null
 ) => {
   let container: Phaser.GameObjects.Container = scene.add.container(x, y);
 
@@ -91,7 +92,7 @@ export const addButton = (
     0,
     'atlas',
     () => {
-      callback(index, container);
+      callback(index, container, data);
     },
     'hover.png',
     'normal.png',

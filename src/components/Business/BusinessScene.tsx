@@ -7,7 +7,7 @@ import {
   addButton,
 } from '../../Utils/UIUtils';
 import store from '../../Utils/Store';
-import { Business } from '../../Reducers/CurrentScore';
+import { Business } from '../../Reducers/Business';
 
 export class BusinessScene extends Phaser.Scene {
   background: Phaser.GameObjects.Graphics;
@@ -30,20 +30,32 @@ export class BusinessScene extends Phaser.Scene {
     this.addButtons();
   }
 
-  selectBusiness = (index: number, btn: Phaser.GameObjects.Container) => {
+  selectBusiness = (
+    index: number,
+    btn: Phaser.GameObjects.Container,
+    business: Business
+  ) => {
     if (this.isPurchasedScreen) {
-      this.upgradeBusiness(index, btn);
+      this.upgradeBusiness(index, btn, business);
     } else {
-      this.purchaseBusiness(index, btn);
+      this.purchaseBusiness(index, btn, business);
     }
   };
 
-  purchaseBusiness = (index: number, btn: Phaser.GameObjects.Container) => {
-    this.game.events.emit(BUY_BUSINESS, index);
+  purchaseBusiness = (
+    index: number,
+    btn: Phaser.GameObjects.Container,
+    business: Business
+  ) => {
+    this.game.events.emit(BUY_BUSINESS, index, business);
     btn.destroy();
   };
 
-  upgradeBusiness = (index: number, btn: Phaser.GameObjects.Container) => {};
+  upgradeBusiness = (
+    index: number,
+    btn: Phaser.GameObjects.Container,
+    business: Business
+  ) => {};
 
   addButtons() {
     const topMargin: number = 100 * GAME_SCALE;
@@ -58,9 +70,9 @@ export class BusinessScene extends Phaser.Scene {
 
     let data: Array<Business>;
     if (this.isPurchasedScreen) {
-      data = store.getState().currentScoreReducer.purchasedBusinesses;
+      data = store.getState().businessReducer.purchasedBusinesses;
     } else {
-      data = store.getState().currentScoreReducer.businesses;
+      data = store.getState().businessReducer.businesses;
     }
 
     data.forEach((data: Business, index: number) => {
@@ -76,7 +88,8 @@ export class BusinessScene extends Phaser.Scene {
         index,
         this,
         data.Cost > store.getState().currentScoreReducer.currentScore &&
-          !this.isPurchasedScreen
+          !this.isPurchasedScreen,
+        data
       );
 
       if (index === 1 || index === 3) {

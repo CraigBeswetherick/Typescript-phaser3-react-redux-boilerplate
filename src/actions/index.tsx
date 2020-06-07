@@ -1,3 +1,6 @@
+import { Manager } from '../Reducers/Managers';
+import { Business } from '../Reducers/Business';
+
 /*
  * action types
  */
@@ -23,10 +26,10 @@ export function increaseDate() {
   return { type: INCREASE_DATE };
 }
 
-export function buyManager(managerId: number) {
-  return { type: BUY_MANAGER, managerId };
+export function buyManager(managerId: number, manager: Manager) {
+  return { type: BUY_MANAGER, managerId, manager };
 }
 
-export function buyBusiness(businessId: number) {
-  return { type: BUY_BUSINESS, businessId };
+export function buyBusiness(businessId: number, business: Business) {
+  return { type: BUY_BUSINESS, businessId, business };
 }

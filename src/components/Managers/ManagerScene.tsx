@@ -7,7 +7,7 @@ import {
   addButton,
 } from '../../Utils/UIUtils';
 import store from '../../Utils/Store';
-import { Manager } from '../../Reducers/CurrentScore';
+import { Manager } from '../../Reducers/Managers';
 import { Button } from '../Game/Button';
 
 export class ManagerScene extends Phaser.Scene {
@@ -33,20 +33,32 @@ export class ManagerScene extends Phaser.Scene {
     this.addButtons();
   }
 
-  selectManager = (index: number, btn: Phaser.GameObjects.Container) => {
+  selectManager = (
+    index: number,
+    btn: Phaser.GameObjects.Container,
+    manager: Manager
+  ) => {
     if (this.isPurchasedScreen) {
-      this.handleUpgradeManager(index, btn);
+      this.handleUpgradeManager(index, btn, manager);
     } else {
-      this.handleBuyManager(index, btn);
+      this.handleBuyManager(index, btn, manager);
     }
   };
 
-  handleBuyManager(index: number, btn: Phaser.GameObjects.Container) {
-    this.game.events.emit(BUY_MANAGER, index);
+  handleBuyManager(
+    index: number,
+    btn: Phaser.GameObjects.Container,
+    manager: Manager
+  ) {
+    this.game.events.emit(BUY_MANAGER, index, manager);
     btn.destroy();
   }
 
-  handleUpgradeManager(index: number, btn: Phaser.GameObjects.Container) {}
+  handleUpgradeManager(
+    index: number,
+    btn: Phaser.GameObjects.Container,
+    manager: Manager
+  ) {}
 
   addButtons() {
     const topMargin: number = 100 * GAME_SCALE;
@@ -61,18 +73,13 @@ export class ManagerScene extends Phaser.Scene {
 
     let data: Array<Manager>;
     if (this.isPurchasedScreen) {
-      data = store.getState().currentScoreReducer.purchasedManagers;
+      data = store.getState().managerReducer.purchasedManagers;
     } else {
-      data = store.getState().currentScoreReducer.managers;
+      data = store.getState().managerReducer.managers;
     }
 
     let hasNotPurchasedBusiness: boolean =
-      store.getState().currentScoreReducer.purchasedBusinesses.length === 0;
-
-    console.log(
-      hasNotPurchasedBusiness,
-      store.getState().currentScoreReducer.purchasedBusinesses.length
-    );
+      store.getState().businessReducer.purchasedBusinesses.length === 0;
 
     data.forEach((data: Manager, index: number) => {
       let isDisabled: boolean = false;
@@ -100,7 +107,8 @@ export class ManagerScene extends Phaser.Scene {
         this.selectManager,
         index,
         this,
-        isDisabled
+        isDisabled,
+        data
       );
 
       if (index === 1 || index === 3) {
