@@ -1,4 +1,4 @@
-import { INCREASE_SCORE, INCREASE_DATE } from '../../Actions';
+import { INCREASE_DATE } from '../../Actions';
 import { ManagerScene } from '../Managers/ManagerScene';
 import { BusinessScene } from '../Business/BusinessScene';
 import { Button } from './Button';
@@ -23,10 +23,6 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     this.game.scene.remove(PRELOADER_SCENE);
-
-    this.input.on('pointerdown', () => {
-      this.game.events.emit(INCREASE_SCORE, 1);
-    });
 
     this.tweens.addCounter({
       to: 1,

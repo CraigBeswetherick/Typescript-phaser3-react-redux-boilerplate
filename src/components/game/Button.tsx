@@ -2,6 +2,8 @@ export class Button extends Phaser.GameObjects.Sprite {
   onInputOver = () => {};
   onInputOut = () => {};
   onInputUp = () => {};
+  disabledFrame: string;
+  isDisabled: boolean;
 
   constructor(
     scene: Phaser.Scene,
@@ -11,9 +13,18 @@ export class Button extends Phaser.GameObjects.Sprite {
     actionOnClick = () => {},
     overFrame: string,
     outFrame: string,
-    downFrame: string
+    downFrame: string,
+    disabledFrame: string = 'disabled.png',
+    isDisabled: boolean = false
   ) {
     super(scene, x, y, texture);
+
+    this.disabledFrame = disabledFrame;
+
+    if (isDisabled) {
+      this.disableButton();
+      return;
+    }
 
     this.setFrame(outFrame)
       .setInteractive({ useHandCursor: true })
@@ -35,4 +46,10 @@ export class Button extends Phaser.GameObjects.Sprite {
         this.setFrame(outFrame);
       });
   }
+
+  disableButton = () => {
+    this.isDisabled = true;
+    this.setFrame(this.disabledFrame);
+    this.setInteractive({ useHandCursor: false });
+  };
 }

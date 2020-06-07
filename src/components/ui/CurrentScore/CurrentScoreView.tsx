@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
 interface Props {
   currentScore: Number;
@@ -10,11 +10,16 @@ interface Props {
 const CurrentScoreView = (props: Props) => {
   return (
     <div className="score">
-      <Typography variant="subtitle2">
-        Current Cash: {props.currentScore} Current Date:{' '}
-        {props.currentDate.getMonth() + 1}/{props.currentDate.getDate()}/
-        {props.currentDate.getFullYear()}
-      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs zeroMinWidth>
+          <Typography noWrap>Cash: {props.currentScore}</Typography>
+        </Grid>
+        <Grid item xs zeroMinWidth>
+          <Typography noWrap>
+            Date: {props.currentDate.toDateString()}
+          </Typography>
+        </Grid>
+      </Grid>
     </div>
   );
 };

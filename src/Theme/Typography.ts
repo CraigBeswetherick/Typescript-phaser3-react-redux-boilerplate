@@ -1,6 +1,12 @@
 'use-strict';
 
 const Typography = {
+  body1: {
+    'font-size': '1.5rem',
+    'line-height': '10vh',
+    color: 'white',
+  },
+
   h1: {
     'font-size': '4rem',
     'text-align': 'center',
@@ -22,6 +28,8 @@ const Typography = {
     padding: '1%',
     color: 'white',
     background: 'grey',
+    display: 'block',
+    width: '50vw',
   },
 };
 

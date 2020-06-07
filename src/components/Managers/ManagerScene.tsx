@@ -8,10 +8,13 @@ import {
 } from '../../Utils/UIUtils';
 import store from '../../Utils/Store';
 import { Manager } from '../../Reducers/CurrentScore';
+import { Button } from '../Game/Button';
 
 export class ManagerScene extends Phaser.Scene {
   background: Phaser.GameObjects.Graphics;
   isPurchasedScreen: boolean;
+  notEnoughCash: Phaser.GameObjects.Text;
+  buttons: Array<Button>;
 
   constructor() {
     super({
@@ -63,7 +66,29 @@ export class ManagerScene extends Phaser.Scene {
       data = store.getState().currentScoreReducer.managers;
     }
 
+    let hasNotPurchasedBusiness: boolean =
+      store.getState().currentScoreReducer.purchasedBusinesses.length === 0;
+
+    console.log(
+      hasNotPurchasedBusiness,
+      store.getState().currentScoreReducer.purchasedBusinesses.length
+    );
+
     data.forEach((data: Manager, index: number) => {
+      let isDisabled: boolean = false;
+
+      if (hasNotPurchasedBusiness) {
+        isDisabled = true;
+      } else if (
+        data.Cost > store.getState().currentScoreReducer.currentScore
+      ) {
+        isDisabled = true;
+      } else {
+        if (!this.isPurchasedScreen) {
+          isDisabled = false;
+        }
+      }
+
       addButton(
         x,
         y + 100 * index * GAME_SCALE,
@@ -74,7 +99,8 @@ export class ManagerScene extends Phaser.Scene {
         ],
         this.selectManager,
         index,
-        this
+        this,
+        isDisabled
       );
 
       if (index === 1 || index === 3) {

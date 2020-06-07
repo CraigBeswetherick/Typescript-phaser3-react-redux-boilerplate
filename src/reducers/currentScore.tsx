@@ -32,7 +32,7 @@ export interface CurrentScoreState {
 }
 
 const defaultCurrentScoreState = (): CurrentScoreState => ({
-  currentScore: 0,
+  currentScore: 14000,
   currentDate: new Date(2000, 0, 0),
   timePlayed: 0,
   purchasedBusinesses: [],
@@ -89,38 +89,38 @@ const defaultCurrentScoreState = (): CurrentScoreState => ({
   managers: [
     {
       Name: 'Nigel Bigglesworth',
-      Cost: 500,
+      Cost: 7000,
       Bonus: 6,
       Avatar: 'Nigel.png',
     },
     {
       Name: 'Jonathan Jimmyjam',
-      Cost: 200,
+      Cost: 6000,
       Bonus: 4,
       Avatar: 'Jonathan.png',
     },
     {
       Name: 'Craig Dilly',
-      Cost: 300,
+      Cost: 7000,
       Bonus: 4,
       Avatar: 'Craig.png',
     },
     {
       Name: 'Michael Carter',
-      Cost: 1500,
+      Cost: 15000,
       Bonus: 10,
       Avatar: 'Micheal.png',
     },
     {
       Name: 'Tom Fairfield',
-      Cost: 1200,
+      Cost: 12000,
       Bonus: 8,
       Avatar: 'Micheal.png',
     },
 
     {
       Name: 'Linda Eltherington',
-      Cost: 1200,
+      Cost: 12000,
       Bonus: 8,
       Avatar: 'Linda.png',
     },
@@ -170,9 +170,12 @@ const handleIncreaseDateReducer = (state: CurrentScoreState) => {
 };
 
 const handleBuyBusiness = (state: CurrentScoreState, businessId: number) => {
-  state.purchasedBusinesses.push(state.businesses.splice(businessId, 1)[0]);
+  const business: Business = state.businesses.splice(businessId, 1)[0];
+
+  state.purchasedBusinesses.push(business);
   return Object.assign({}, state, {
-    state,
+    ...state,
+    currentScore: state.currentScore - business.Cost,
   });
 };
 

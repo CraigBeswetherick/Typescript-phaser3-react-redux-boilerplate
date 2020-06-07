@@ -74,7 +74,9 @@ export class BusinessScene extends Phaser.Scene {
         ],
         this.selectBusiness,
         index,
-        this
+        this,
+        data.Cost > store.getState().currentScoreReducer.currentScore &&
+          !this.isPurchasedScreen
       );
 
       if (index === 1 || index === 3) {

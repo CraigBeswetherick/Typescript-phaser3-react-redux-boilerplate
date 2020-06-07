@@ -80,7 +80,8 @@ export const addButton = (
   labels: Array<string>,
   callback: Function,
   index: number,
-  scene: Phaser.Scene
+  scene: Phaser.Scene,
+  isDisabled: boolean = false
 ) => {
   let container: Phaser.GameObjects.Container = scene.add.container(x, y);
 
@@ -94,7 +95,9 @@ export const addButton = (
     },
     'hover.png',
     'normal.png',
-    'down.png'
+    'down.png',
+    'disabled.png',
+    isDisabled
   );
   btn.setOrigin(0);
   btn.scaleX = 0.6 * GAME_SCALE;
