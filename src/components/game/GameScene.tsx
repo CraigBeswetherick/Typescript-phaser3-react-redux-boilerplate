@@ -10,6 +10,7 @@ import {
   GAME_SCALE,
 } from '../../Utils/constants';
 import { addText } from '../../Utils/UIUtils';
+import { initRotateOverlay } from '../../Utils/RotateOverlay';
 
 export class GameScene extends Phaser.Scene {
   background: Phaser.GameObjects.Image;
@@ -39,47 +40,7 @@ export class GameScene extends Phaser.Scene {
     this.addBackground();
     this.addButtons();
 
-    this.game.scale.addListener(Phaser.Scale.Events.ORIENTATION_CHANGE, () => {
-      this.checkOrientation();
-    });
-  }
-
-  checkOrientation() {
-    if (this.game.scale.isPortrait) {
-      this.createRotateScreen();
-    } else {
-      if (this.rotateDeviceContainer) {
-        this.rotateDeviceContainer.destroy();
-        this.rotateDeviceContainer = undefined;
-      }
-    }
-  }
-
-  createRotateScreen() {
-    if (this.rotateDeviceContainer) {
-      return;
-    }
-
-    this.rotateDeviceContainer = this.add.container(0, 0);
-
-    const { width, height } = this.sys.game.canvas;
-    let rotateDeviceText: Phaser.GameObjects.Text = addText(
-      width / 2,
-      height * 0.6,
-      'Please rotate your device',
-      this,
-      '#FFF',
-      28
-    );
-
-    rotateDeviceText.x -= rotateDeviceText.width / 2;
-
-    let background: Phaser.GameObjects.Graphics = this.add.graphics();
-    background.fillStyle(0x000, 1);
-    background.fillRect(0, 0, width, height);
-
-    this.rotateDeviceContainer.add(background);
-    this.rotateDeviceContainer.add(rotateDeviceText);
+    initRotateOverlay(this, 1);
   }
 
   addBackground() {
@@ -165,12 +126,8 @@ export class GameScene extends Phaser.Scene {
     addText(x + textX, y + 24 * GAME_SCALE, text, this);
   }
 
-  update() {}
-
   destroy() {
     // We want to keep the assets in the cache and leave the renderer for reuse.
     this.game.destroy(true);
   }
-
-  launch() {}
 }

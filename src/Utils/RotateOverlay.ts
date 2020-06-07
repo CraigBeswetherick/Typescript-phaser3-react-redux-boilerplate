@@ -3,7 +3,13 @@ import { addText } from './UIUtils';
 let rotateDeviceContainerList: Array<Phaser.GameObjects.Container> = [];
 
 export const initRotateOverlay = (scene: Phaser.Scene, sceneId: number) => {
-  scene.game.scale.addListener(Phaser.Scale.Events.ORIENTATION_CHANGE, () => {
+  scene.scale.addListener(Phaser.Scale.Events.ORIENTATION_CHANGE, () => {
+    checkOrientation(scene, sceneId);
+  });
+};
+
+export const removeRotateOverlay = (scene: Phaser.Scene, sceneId: number) => {
+  scene.scale.removeListener(Phaser.Scale.Events.ORIENTATION_CHANGE, () => {
     checkOrientation(scene, sceneId);
   });
 };
@@ -12,15 +18,13 @@ const checkOrientation = (scene: Phaser.Scene, sceneId: number) => {
   if (scene.game.scale.isPortrait) {
     createRotateScreen(scene, sceneId);
   } else {
-    if (rotateDeviceContainerList[sceneId]) {
-      rotateDeviceContainerList[sceneId].destroy();
-      rotateDeviceContainerList.splice(sceneId, 1);
-    }
+    rotateDeviceContainerList[sceneId].visible = false;
   }
 };
 
 const createRotateScreen = (scene: Phaser.Scene, sceneId: number) => {
   if (rotateDeviceContainerList[sceneId]) {
+    rotateDeviceContainerList[sceneId].visible = true;
     return;
   }
 

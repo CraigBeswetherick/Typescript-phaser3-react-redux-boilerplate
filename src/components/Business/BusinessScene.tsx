@@ -10,6 +10,7 @@ import {
 import store from '../../Utils/Store';
 import { Business } from '../../Reducers/Business';
 import { Button } from '../Game/Button';
+import { initRotateOverlay } from '../../Utils/RotateOverlay';
 
 export class BusinessScene extends Phaser.Scene {
   background: Phaser.GameObjects.Graphics;
@@ -31,6 +32,8 @@ export class BusinessScene extends Phaser.Scene {
     this.background = addBackground(this);
     addHeader(this, 'Choose a Business');
     this.addButtons();
+
+    initRotateOverlay(this, 2);
   }
 
   selectBusiness = (index: number, btn: Button, business: Business) => {
@@ -103,6 +106,4 @@ export class BusinessScene extends Phaser.Scene {
 
     addCloseButton(this, BUSINESS_SCENE);
   }
-
-  destroy() {}
 }

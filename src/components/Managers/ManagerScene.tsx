@@ -10,6 +10,7 @@ import {
 import store from '../../Utils/Store';
 import { Manager } from '../../Reducers/Managers';
 import { Button } from '../Game/Button';
+import { initRotateOverlay } from '../../Utils/RotateOverlay';
 
 export class ManagerScene extends Phaser.Scene {
   background: Phaser.GameObjects.Graphics;
@@ -32,6 +33,7 @@ export class ManagerScene extends Phaser.Scene {
     this.background = addBackground(this);
     addHeader(this, 'Choose a Manager');
     this.addButtons();
+    initRotateOverlay(this, 3);
   }
 
   selectManager = (index: number, btn: Button, manager: Manager) => {
@@ -114,6 +116,4 @@ export class ManagerScene extends Phaser.Scene {
 
     addCloseButton(this, MANAGER_SCENE);
   }
-
-  destroy() {}
 }
