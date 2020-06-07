@@ -9,9 +9,11 @@ import {
   BUSINESS_SCENE,
   GAME_SCALE,
 } from '../../Utils/constants';
+import { addText } from '../../Utils/UIUtils';
 
 export class GameScene extends Phaser.Scene {
   background: Phaser.GameObjects.Image;
+  rotateDeviceContainer?: Phaser.GameObjects.Container;
 
   constructor() {
     super({
@@ -40,6 +42,48 @@ export class GameScene extends Phaser.Scene {
 
     this.addBackground();
     this.addButtons();
+
+    this.game.scale.addListener(Phaser.Scale.Events.ORIENTATION_CHANGE, () => {
+      this.checkOrientation();
+    });
+  }
+
+  checkOrientation() {
+    if (this.game.scale.isPortrait) {
+      this.createRotateScreen();
+    } else {
+      if (this.rotateDeviceContainer) {
+        this.rotateDeviceContainer.destroy();
+        this.rotateDeviceContainer = undefined;
+      }
+    }
+  }
+
+  createRotateScreen() {
+    if (this.rotateDeviceContainer) {
+      return;
+    }
+
+    this.rotateDeviceContainer = this.add.container(0, 0);
+
+    const { width, height } = this.sys.game.canvas;
+    let rotateDeviceText: Phaser.GameObjects.Text = addText(
+      width / 2,
+      height * 0.6,
+      'Please rotate your device',
+      this,
+      '#FFF',
+      28
+    );
+
+    rotateDeviceText.x -= rotateDeviceText.width / 2;
+
+    let background: Phaser.GameObjects.Graphics = this.add.graphics();
+    background.fillStyle(0x000, 1);
+    background.fillRect(0, 0, width, height);
+
+    this.rotateDeviceContainer.add(background);
+    this.rotateDeviceContainer.add(rotateDeviceText);
   }
 
   addBackground() {
@@ -55,28 +99,16 @@ export class GameScene extends Phaser.Scene {
     this.background.scaleY = scale;
   }
 
-  openManagerScene = () => {
-    this.game.scene.add(MANAGER_SCENE, ManagerScene, true, {
-      isPurchasedScreen: false,
+  openSceneOverlay = (
+    overlayId: string,
+    scene: Phaser.Scene,
+    isPurchasedScreen: boolean
+  ) => {
+    this.game.scene.add(overlayId, scene, true, {
+      isPurchasedScreen,
     });
-  };
 
-  openBusinessScene = () => {
-    this.game.scene.add(BUSINESS_SCENE, BusinessScene, true, {
-      isPurchasedScreen: false,
-    });
-  };
-
-  openPurchasedManagerScene = () => {
-    this.game.scene.add(MANAGER_SCENE, ManagerScene, true, {
-      isPurchasedScreen: true,
-    });
-  };
-
-  openPurchasedBusinessScene = () => {
-    this.game.scene.add(BUSINESS_SCENE, BusinessScene, true, {
-      isPurchasedScreen: true,
-    });
+    this.scene.pause();
   };
 
   addButtons() {
@@ -85,27 +117,35 @@ export class GameScene extends Phaser.Scene {
     this.addButton(
       40 * GAME_SCALE,
       30 * GAME_SCALE,
-      this.openPurchasedManagerScene,
+      () => {
+        this.openSceneOverlay(MANAGER_SCENE, new ManagerScene(), true);
+      },
       'Purchased\nManagers'
     );
     this.addButton(
       40 * GAME_SCALE,
       120 * GAME_SCALE,
-      this.openPurchasedBusinessScene,
+      () => {
+        this.openSceneOverlay(BUSINESS_SCENE, new BusinessScene(), true);
+      },
       'Purchased\nBusinesses'
     );
 
     this.addButton(
       width - 200 * GAME_SCALE,
       30 * GAME_SCALE,
-      this.openManagerScene,
-      'Managers'
+      () => {
+        this.openSceneOverlay(MANAGER_SCENE, new ManagerScene(), false);
+      },
+      'Hire\nManagers'
     );
     this.addButton(
       width - 200 * GAME_SCALE,
       120 * GAME_SCALE,
-      this.openBusinessScene,
-      'Businesses'
+      () => {
+        this.openSceneOverlay(BUSINESS_SCENE, new BusinessScene(), false);
+      },
+      'Buy\nBusinesses'
     );
   }
 
@@ -127,20 +167,8 @@ export class GameScene extends Phaser.Scene {
     this.add.existing(btn);
     const textX = 97 * GAME_SCALE;
 
-    this.addText(x + textX, y + 41 * GAME_SCALE, text);
+    addText(x + textX, y + 24 * GAME_SCALE, text, this);
   }
-
-  addText = (x: number, y: number, text: string) => {
-    const textField = this.add.text(x, y, text, {
-      fontFamily: 'Roboto',
-      fontSize: 24 * GAME_SCALE,
-      color: '#000',
-    });
-
-    textField.displayOriginX = textField.displayOriginY = 0.5;
-    textField.x -= textField.width / 2;
-    textField.y -= textField.height / 2;
-  };
 
   update() {}
 

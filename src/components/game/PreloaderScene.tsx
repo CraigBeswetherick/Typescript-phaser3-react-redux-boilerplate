@@ -6,12 +6,14 @@ import {
   GAME_HEIGHT,
   setGameScale,
 } from '../../Utils/constants';
+import { addText } from '../../Utils/UIUtils';
 
 interface Props {}
 
 export class PreloaderScene extends Phaser.Scene {
   preloaderBg: Phaser.GameObjects.Graphics;
   preloaderBar: Phaser.GameObjects.Graphics;
+  rotateDeviceText: Phaser.GameObjects.Text;
 
   constructor() {
     super({
@@ -36,20 +38,75 @@ export class PreloaderScene extends Phaser.Scene {
   };
 
   create() {
-    const { width, height } = this.sys.game.canvas;
-    setGameScale(Math.min(width / GAME_WIDTH, height / GAME_HEIGHT));
-
     this.createLoaderGraphic();
     this.load.setCORS('anonymous');
     this.load.atlas('atlas', 'images/assets.png', 'images/assets.json');
     this.load.image('background', 'images/background.png');
     this.load.on('progress', this.updateLoaderGraphic);
-    this.load.on('complete', this.handleLevelLoaded);
+    this.load.on('complete', this.checkOrientation);
     this.load.start();
   }
 
   updateLoaderGraphic = (progress: number) => {
     this.preloaderBar.scaleX = progress;
+  };
+
+  checkOrientation = () => {
+    if (this.game.scale.isLandscape) {
+      this.game.scale.removeListener(
+        Phaser.Scale.Events.ORIENTATION_CHANGE,
+        this.checkOrientation
+      );
+
+      if (this.rotateDeviceText) {
+        this.resizeGame();
+      } else {
+        this.setGameScale();
+        this.handleLevelLoaded();
+      }
+    } else {
+      this.askUserToRotateDevice();
+    }
+  };
+
+  resizeGame = () => {
+    this.game.scale.resize(window.innerWidth, window.innerHeight * 0.9);
+    this.game.scale.addListener(
+      Phaser.Scale.Events.RESIZE,
+      this.onResizeGameComplete
+    );
+  };
+
+  askUserToRotateDevice = () => {
+    this.game.scale.addListener(
+      Phaser.Scale.Events.ORIENTATION_CHANGE,
+      this.checkOrientation
+    );
+
+    const { width, height } = this.sys.game.canvas;
+    this.rotateDeviceText = addText(
+      width / 2,
+      height * 0.6,
+      'Please rotate your device',
+      this,
+      '#FFF',
+      28
+    );
+  };
+
+  setGameScale = () => {
+    const { width, height } = this.sys.game.canvas;
+    setGameScale(Math.min(width / GAME_WIDTH, height / GAME_HEIGHT));
+  };
+
+  onResizeGameComplete = () => {
+    this.rotateDeviceText.destroy();
+    this.setGameScale();
+    this.game.scale.removeListener(
+      Phaser.Scale.Events.RESIZE,
+      this.onResizeGameComplete
+    );
+    this.playGame();
   };
 
   handleLevelLoaded = () => {

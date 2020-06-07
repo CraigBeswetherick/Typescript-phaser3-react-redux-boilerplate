@@ -26,8 +26,6 @@ const GameView: React.FC<Props> = props => {
 
     game.scene.add('preloader', new PreloaderScene(), true);
 
-    game.scale.scaleMode = Phaser.Scale.FIT;
-
     addListeners(game, props);
   });
 

@@ -1,5 +1,5 @@
 import { Button } from '../Components/Game/Button';
-import { GAME_SCALE } from './constants';
+import { GAME_SCALE, GAME_SCENE } from './constants';
 
 export const addHeader = (scene: Phaser.Scene, text: string) => {
   const fontSize: number = 40 * GAME_SCALE;
@@ -20,6 +20,7 @@ export const addCloseButton = (scene: Phaser.Scene, sceneId: string) => {
     'atlas',
     () => {
       scene.game.scene.remove(sceneId);
+      scene.game.scene.resume(GAME_SCENE);
     },
     'small-hover.png',
     'small-normal.png',
@@ -35,16 +36,19 @@ export const addText = (
   x: number,
   y: number,
   text: string,
-  scene: Phaser.Scene
+  scene: Phaser.Scene,
+  color: string = '#000',
+  fontSize: number = 16 * GAME_SCALE
 ) => {
   const textField = scene.add.text(x, y, text, {
     fontFamily: 'Roboto',
-    fontSize: 16 * GAME_SCALE,
-    color: '#000',
+    fontSize,
+    color,
   });
 
   textField.displayOriginX = textField.displayOriginY = 0.5;
   textField.x -= textField.width / 2;
+  textField.setAlign('center');
 
   return textField;
 };
@@ -62,6 +66,10 @@ export const addBackground = (scene: Phaser.Scene) => {
     height - padding * 2,
     padding
   );
+
+  background.setInteractive(true);
+  background.input.hitAreaCallback = () => {};
+  background.input.alwaysEnabled = true;
 
   return background;
 };
