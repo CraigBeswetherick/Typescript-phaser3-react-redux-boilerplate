@@ -14,7 +14,6 @@ import { Business } from '../../Reducers/Business';
 import { initRotateOverlay } from '../../Utils/RotateOverlay';
 import store from '../../Utils/Store';
 import { upgradeBusiness } from '../../Actions';
-import { createEmitter } from '../../Utils/Particles';
 import { Button } from '../Game/Button';
 
 export class UpgradeBusinessScene extends Phaser.Scene {
@@ -41,6 +40,7 @@ export class UpgradeBusinessScene extends Phaser.Scene {
 
     addCloseButton(this, UPGRADE_BUSINESS_SCENE);
     this.addUpgradeButton();
+
     initRotateOverlay(this, 4);
   }
 
