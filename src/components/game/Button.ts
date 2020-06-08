@@ -1,4 +1,4 @@
-import { GAME_SCALE } from '../../Utils/constants';
+import { GAME_SCALE } from '../../Utils/Constants';
 import { addText } from '../../Utils/UIUtils';
 
 export class Button extends Phaser.GameObjects.Container {

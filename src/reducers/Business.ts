@@ -1,4 +1,4 @@
-import { BUY_BUSINESS } from '../Actions';
+import { BUY_BUSINESS, UPGRADE_BUSINESS } from '../Actions';
 import { Manager } from './Managers';
 
 export interface Business {
@@ -88,6 +88,8 @@ export const businessReducer = (
   switch (action.type) {
     case BUY_BUSINESS:
       return handleBuyBusiness(state, action.business);
+    case UPGRADE_BUSINESS:
+      return handleUpgradeBusiness(state, action.business);
   }
 
   return state;
@@ -97,6 +99,16 @@ const handleBuyBusiness = (state: CurrentBusinessState, businessId: number) => {
   const business: Business = state.businesses.splice(businessId, 1)[0];
 
   state.purchasedBusinesses.push(business);
+  return Object.assign({}, state, {
+    ...state,
+  });
+};
+
+const handleUpgradeBusiness = (
+  state: CurrentBusinessState,
+  business: Business
+) => {
+  business.CurrentLevel += 1;
   return Object.assign({}, state, {
     ...state,
   });

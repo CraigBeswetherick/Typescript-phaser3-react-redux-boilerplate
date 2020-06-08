@@ -5,7 +5,7 @@
 			"format": "RGBA8888",
 			"size": {
 				"w": 491,
-				"h": 568
+				"h": 597
 			},
 			"scale": 1,
 			"frames": [
@@ -155,6 +155,27 @@
 						"w": 314,
 						"h": 140
 					}
+				},
+				{
+					"filename": "star-sprite.jpg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 70,
+						"h": 70
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 70,
+						"h": 70
+					},
+					"frame": {
+						"x": 317,
+						"y": 526,
+						"w": 70,
+						"h": 70
+					}
 				}
 			]
 		}
@@ -162,6 +183,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:7c5249da34064585769a6a1f32299d3a:081517071e472e6ef59724b906d97265:a759b6bbc8381ac9c472b28f589ad0d6$"
+		"smartupdate": "$TexturePacker:SmartUpdate:e167c9d2de7b8266cc818281b2cd12d7:ca741596969f9b74a58795045143257b:a759b6bbc8381ac9c472b28f589ad0d6$"
 	}
 }

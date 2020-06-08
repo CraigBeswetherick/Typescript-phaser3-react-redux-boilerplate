@@ -1,5 +1,5 @@
 import { BUY_MANAGER } from '../../Actions';
-import { MANAGER_SCENE, GAME_SCALE, GAME_HEIGHT } from '../../Utils/constants';
+import { MANAGER_SCENE, GAME_SCALE, GAME_HEIGHT } from '../../Utils/Constants';
 import {
   addHeader,
   addCloseButton,
@@ -11,12 +11,14 @@ import store from '../../Utils/Store';
 import { Manager } from '../../Reducers/Managers';
 import { Button } from '../Game/Button';
 import { initRotateOverlay } from '../../Utils/RotateOverlay';
+import { createEmitter } from '../../Utils/Particles';
 
 export class ManagerScene extends Phaser.Scene {
   background: Phaser.GameObjects.Graphics;
   isPurchasedScreen: boolean;
   notEnoughCash: Phaser.GameObjects.Text;
   buttons: Array<Button> = [];
+  emitter: Phaser.GameObjects.Particles.ParticleEmitter;
 
   constructor() {
     super({
@@ -34,6 +36,8 @@ export class ManagerScene extends Phaser.Scene {
     addHeader(this, 'Choose a Manager');
     this.addButtons();
     initRotateOverlay(this, 3);
+
+    this.emitter = createEmitter(this);
   }
 
   selectManager = (index: number, btn: Button, manager: Manager) => {
@@ -48,6 +52,13 @@ export class ManagerScene extends Phaser.Scene {
     this.game.events.emit(BUY_MANAGER, index, manager);
     this.buttons.splice(this.buttons.indexOf(btn), 1);
     checkButtons(this.buttons);
+
+    this.emitter.explode(
+      50,
+      btn.x + btn.background.width / 2,
+      btn.y + btn.background.height / 2
+    );
+
     btn.destroy();
   }
 

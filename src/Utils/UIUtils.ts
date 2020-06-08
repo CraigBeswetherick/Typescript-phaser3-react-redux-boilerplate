@@ -1,5 +1,10 @@
 import { Button } from '../Components/Game/Button';
-import { GAME_SCALE, GAME_SCENE } from './constants';
+import {
+  GAME_SCALE,
+  GAME_SCENE,
+  UPGRADE_BUSINESS_SCENE,
+  BUSINESS_SCENE,
+} from './Constants';
 import store from './Store';
 
 export const addHeader = (scene: Phaser.Scene, text: string) => {
@@ -31,7 +36,12 @@ export const addCloseButton = (scene: Phaser.Scene, sceneId: string) => {
     'atlas',
     () => {
       scene.game.scene.remove(sceneId);
-      scene.game.scene.resume(GAME_SCENE);
+
+      if (sceneId === UPGRADE_BUSINESS_SCENE) {
+        scene.game.scene.resume(BUSINESS_SCENE);
+      } else {
+        scene.game.scene.resume(GAME_SCENE);
+      }
     },
     'small-hover.png',
     'small-normal.png',

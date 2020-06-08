@@ -1,5 +1,10 @@
 import { BUY_BUSINESS } from '../../Actions';
-import { BUSINESS_SCENE, GAME_SCALE, GAME_HEIGHT } from '../../Utils/constants';
+import {
+  BUSINESS_SCENE,
+  GAME_SCALE,
+  GAME_HEIGHT,
+  UPGRADE_BUSINESS_SCENE,
+} from '../../Utils/Constants';
 import {
   addHeader,
   addCloseButton,
@@ -11,11 +16,14 @@ import store from '../../Utils/Store';
 import { Business } from '../../Reducers/Business';
 import { Button } from '../Game/Button';
 import { initRotateOverlay } from '../../Utils/RotateOverlay';
+import { UpgradeBusinessScene } from './UpgradeBusiness';
+import { createEmitter } from '../../Utils/Particles';
 
 export class BusinessScene extends Phaser.Scene {
   background: Phaser.GameObjects.Graphics;
   isPurchasedScreen: boolean;
   buttons: Array<Button> = [];
+  emitter: Phaser.GameObjects.Particles.ParticleEmitter;
 
   constructor() {
     super({
@@ -33,6 +41,12 @@ export class BusinessScene extends Phaser.Scene {
     addHeader(this, 'Choose a Business');
     this.addButtons();
 
+    store.subscribe(() => {
+      checkButtons(this.buttons);
+    });
+
+    this.emitter = createEmitter(this);
+
     initRotateOverlay(this, 2);
   }
 
@@ -48,6 +62,13 @@ export class BusinessScene extends Phaser.Scene {
     this.game.events.emit(BUY_BUSINESS, index, business);
     this.buttons.splice(this.buttons.indexOf(btn), 1);
     checkButtons(this.buttons);
+
+    this.emitter.explode(
+      50,
+      btn.x + btn.background.width / 2,
+      btn.y + btn.background.height / 2
+    );
+
     btn.destroy();
   };
 
@@ -56,7 +77,13 @@ export class BusinessScene extends Phaser.Scene {
     btn: Phaser.GameObjects.Container,
     business: Business
   ) => {
-    checkButtons(this.buttons);
+    this.scene.pause();
+    this.game.scene.add(
+      UPGRADE_BUSINESS_SCENE,
+      new UpgradeBusinessScene(),
+      true,
+      { business }
+    );
   };
 
   addButtons() {
@@ -84,7 +111,7 @@ export class BusinessScene extends Phaser.Scene {
         [
           data.Name,
           ' Cost $' + data.Cost.toString(),
-          ' Earnings : ' + data.BaseEarnings,
+          ' Earnings : ' + data.BaseEarnings * data.CurrentLevel,
         ],
         () => {
           this.selectBusiness(index, button, data);

@@ -181,6 +181,22 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">disabled.png</key>
+            <key type="filename">normal.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0,0</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>79,35,157,70</rect>
+                <key>scale9Paddings</key>
+                <rect>79,35,157,70</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">down.png</key>
             <key type="filename">hover.png</key>
             <struct type="IndividualSpriteSettings">
@@ -194,21 +210,6 @@
                 <rect>79,35,158,70</rect>
                 <key>scale9Paddings</key>
                 <rect>79,35,158,70</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">normal.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0,0</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>79,35,157,70</rect>
-                <key>scale9Paddings</key>
-                <rect>79,35,157,70</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -226,6 +227,21 @@
                 <rect>43,43,85,87</rect>
                 <key>scale9Paddings</key>
                 <rect>43,43,85,87</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">star-sprite.jpg</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0,0</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>18,18,35,35</rect>
+                <key>scale9Paddings</key>
+                <rect>18,18,35,35</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

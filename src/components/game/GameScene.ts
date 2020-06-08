@@ -8,7 +8,7 @@ import {
   MANAGER_SCENE,
   BUSINESS_SCENE,
   GAME_SCALE,
-} from '../../Utils/constants';
+} from '../../Utils/Constants';
 import { addText } from '../../Utils/UIUtils';
 import { initRotateOverlay } from '../../Utils/RotateOverlay';
 

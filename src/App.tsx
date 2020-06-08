@@ -1,6 +1,5 @@
 import React from 'react';
 import { GameContainer } from './Components/Game';
-import StartMenu from './Components/StartMenu';
 import './App.scss';
 import { Router, Switch, Route } from 'react-router-dom';
 import history from './Utils/History';
@@ -13,10 +12,7 @@ const App: React.FC = () => {
       <MuiThemeProvider theme={Theme}>
         <Router history={history}>
           <Switch>
-            <Route exact path="/">
-              <StartMenu />
-            </Route>
-            <Route path="/game">
+            <Route path="/">
               <GameContainer />
             </Route>
           </Switch>

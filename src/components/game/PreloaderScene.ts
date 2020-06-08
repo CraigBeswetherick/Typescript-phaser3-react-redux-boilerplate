@@ -5,10 +5,8 @@ import {
   GAME_WIDTH,
   GAME_HEIGHT,
   setGameScale,
-} from '../../Utils/constants';
+} from '../../Utils/Constants';
 import { addText } from '../../Utils/UIUtils';
-
-interface Props {}
 
 export class PreloaderScene extends Phaser.Scene {
   preloaderBg: Phaser.GameObjects.Graphics;

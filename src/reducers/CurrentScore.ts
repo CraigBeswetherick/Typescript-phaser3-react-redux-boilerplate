@@ -1,9 +1,8 @@
 import {
-  INCREASE_SCORE,
-  RESET_SCORE,
   INCREASE_DATE,
   BUY_BUSINESS,
   BUY_MANAGER,
+  UPGRADE_BUSINESS,
 } from '../Actions';
 import { Manager } from './Managers';
 import { Business } from './Business';
@@ -25,14 +24,6 @@ export const currentScoreReducer = (
   action: any
 ) => {
   switch (action.type) {
-    case INCREASE_SCORE:
-      return handleIncreaseScoreReducer(
-        state,
-        action.businesses,
-        action.managers
-      );
-    case RESET_SCORE:
-      return handleResetScoreReducer(state);
     case INCREASE_DATE:
       return handleIncreaseDateReducer(
         state,
@@ -43,23 +34,11 @@ export const currentScoreReducer = (
       return handleBuyBusiness(state, action.business);
     case BUY_MANAGER:
       return handleBuyManager(state, action.manager);
+    case UPGRADE_BUSINESS:
+      return handleUpgradeBusiness(state, action.business);
   }
 
   return state;
-};
-
-const handleResetScoreReducer = (state: CurrentScoreState) => {
-  return Object.assign({}, state, {
-    currentScore: 0,
-  });
-};
-
-const handleIncreaseScoreReducer = (
-  state: CurrentScoreState,
-  businesses: Array<Business>,
-  managers: Array<Manager>
-) => {
-  return Object.assign({}, state, {});
 };
 
 const handleIncreaseDateReducer = (
@@ -85,6 +64,18 @@ const handleIncreaseDateReducer = (
     ...state,
     timePlayed: state.timePlayed + 1,
     currentScore: state.currentScore + increment,
+  });
+};
+
+const handleUpgradeBusiness = (
+  state: CurrentScoreState,
+  business: Business
+) => {
+  return Object.assign({}, state, {
+    ...state,
+    currentScore:
+      state.currentScore -
+      business.UpgradeImprovementCost * business.CurrentLevel,
   });
 };
 

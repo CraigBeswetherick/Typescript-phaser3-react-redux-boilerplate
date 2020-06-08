@@ -35,7 +35,7 @@ const GameView: React.FC<Props> = props => {
 function addListeners(game: Phaser.Game, props: Props) {
   game.events.on(INCREASE_DATE, () => {
     props.onIncreaseDate(
-      store.getState().businessReducer.businesses,
+      store.getState().businessReducer.purchasedBusinesses,
       store.getState().managerReducer.managers
     );
   });
