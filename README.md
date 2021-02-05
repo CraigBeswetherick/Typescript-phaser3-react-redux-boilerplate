@@ -58,9 +58,9 @@ As previously stated, players earn money over time due to the amount of business
 
 The project has been developed using Create React App, Phaser, and Redux. Redux was used as a central repository to track player progress, and reducers have been implemented to control the application of values and act on events created by the user. Redux was also chosen due to the ability for future integration with a server - it could easily be swapped out for many different options such as a NodeJS API with a Mongo backend, or Firebase storage.
 
-Phaser was chosen as it is a game development framework support by Facebook and contains an extensive API making integration with Facebook easier. Scenes have been implemented to enable the display of screens the user needs to use, as well as other features such as particle physics.
+Phaser was chosen as it is a game development framework supported by Facebook and contains an extensive API making integration with Facebook easier. Scenes have been implemented to enable the display of screens the user needs to use, as well as other features such as particle physics.
 
-Create-React-App was chosen due to features such as code splitting, minifictation, and being able to bind values from Redux to the DOM. This is important to reduce draw calls, which can hamper performance. Player information such as the current date and funds are rendered in the DOM to reduce the amount of work the GPU has to do each frame.
+Create-React-App was chosen due to features such as code splitting, minifictation, and being able to bind values from Redux to the DOM. This is important to reduce draw calls, which can hamper performance. It is better to have things in the DOM, such as a score, rather then have them in canvas so they are not updated and drawn 60 times a second. Player information such as the current date and funds are rendered in the DOM to reduce the amount of work the GPU has to do each frame.
 
 In terms of scaling, the project only supports a landscape view. Custom scaling was implemented to ensure the project renders well on mobile, tablet and desktop and a rotate overlay was added to make sure the game is only played in this orientation.
 
@@ -76,7 +76,7 @@ Due to time constraints focus was plased on the front end. Firebase was explored
 
 Managers being assigned to a business was also omitted for time constraint reasons.
 
-Generally the code base is stable, managable and runs fast. The worst part would be the rotate overlay. This should have been written as a DOM element running above the game rather than being implemented on a scene by scene basis.
+Generally the code base is stable, managable and runs fast. The worst part would be the rotate overlay. This should have been written as a DOM element running above the game rather than being implemented on a scene by scene basis. It was an afterthought and should be done better.
 
 ## Future steps
 
